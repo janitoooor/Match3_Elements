@@ -1,4 +1,5 @@
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Base.Gui
 {
@@ -9,6 +10,16 @@ namespace Base.Gui
 	{
 		[SerializeField]
 		private ProgressLoadingView progressLoadingView;
+		
+		[SerializeField]
+		private RectTransform widgetsParent;
+		
+		public T RegisterWidget<T>(T widgetPrefab) where T : Object, IGuiWidget
+		{
+			var createdWidget = Instantiate(widgetPrefab, widgetsParent);
+			createdWidget.Close();
+			return createdWidget;
+		}
 		
 		public void ShowProgressLoadingView()
 			=> progressLoadingView.Show();

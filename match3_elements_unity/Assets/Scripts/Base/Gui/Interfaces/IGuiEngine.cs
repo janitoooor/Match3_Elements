@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Base.Gui
 {
 	/// <summary>
@@ -8,5 +10,6 @@ namespace Base.Gui
 		void ShowProgressLoadingView();
 		void UpdateProgressLoadingView(float progress);
 		void HideProgressLoadingView();
+		T RegisterWidget<T>(T widgetPrefab) where T : Object, IGuiWidget;
 	}
 }
