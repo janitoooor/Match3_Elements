@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 namespace Meta.MainWidget
 {
-	public sealed class MainGuiWidget : GuiWidget, IMainWidget
+	public sealed class MetaMainWidget : GuiWidget, IMetaMainWidget
 	{
-		public event StartButtonClickedDelegate OnStartButtonClicked;
+		public event MetaStartButtonClickedDelegate OnStartButtonClicked;
 		
 		[SerializeField]
 		private Button startButton;

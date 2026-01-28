@@ -23,7 +23,7 @@ namespace Meta
 		{
 			Container.Bind<MetaMainWidgetGameRegimeSyncStartAction>().AsSingle().NonLazy();
 			
-			Container.BindInterfacesTo<MetaMainWidgetAsyncDataInitializer>().AsSingle();
+			Container.BindInterfacesTo<MetaWidgetAsyncDataInitializer>().AsSingle();
 
 			Container.Bind<IMetaMainWidgetModel>().To<MetaMainWidgetModel>().AsSingle();
 		}
