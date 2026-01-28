@@ -14,7 +14,7 @@ namespace Base.Gui
 			=> progressLoadingView.Show();
 
 		public void UpdateProgressLoadingView(float progress)
-			=> progressLoadingView.UpdateProgress(progress);
+			=> progressLoadingView.IncreaseProgress(progress);
 
 		public void HideProgressLoadingView()
 			=> progressLoadingView.Hide();

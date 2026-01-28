@@ -22,9 +22,14 @@ namespace Base
 			
 			Container.Bind<ISceneLoader>().To<UnitySceneManagementSceneLoader>().AsSingle();
 			
+			Container.Bind<IGuiEngine>().FromInstance(guiEngine);
+			
 			Container.Bind<IGameRegimeLoader>().To<GameRegimeLoader>().AsSingle();
 			
-			Container.Bind<IGuiEngine>().FromInstance(guiEngine);
+			Container.Bind<IGameRegimeActivator>().To<GameRegimeActivator>().AsSingle();
+			
+			Container.BindInterfacesTo<AsyncDataInitializerChain>().AsSingle();
+			Container.BindInterfacesTo<GameRegimeSyncStartActionChain>().AsSingle();
 		}
 
 		public override void Start()

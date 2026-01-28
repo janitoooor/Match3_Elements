@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using Base.Gui;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -7,60 +7,88 @@ namespace Base
 {
 	public sealed class GameRegimeLoader : IGameRegimeLoader
 	{
+		private const float COMMON_SCENE_LOAD_PROGRESS = 0.1F;
+		private const float REGIME_SCENE_LOAD_PROGRESS = 0.4F;
+		private const float REGIME_ACTIVATE_LOAD_PROGRESS = 0.5F;
+		
 		private readonly ISceneLoader sceneLoader;
 		private readonly IGuiEngine guiEngine;
-		private readonly IAsyncProcessor asyncProcessor;
+		private readonly IGameRegimeActivator regimeActivator; 
 
+		private GameRegime currentGameRegime;
+		
 		[Inject]
-		public GameRegimeLoader(ISceneLoader sceneLoader, IGuiEngine guiEngine, IAsyncProcessor asyncProcessor)
+		public GameRegimeLoader(
+			ISceneLoader sceneLoader, 
+			IGuiEngine guiEngine, 
+			IGameRegimeActivator regimeActivator)
 		{
 			this.sceneLoader = sceneLoader;
 			this.guiEngine = guiEngine;
-			this.asyncProcessor = asyncProcessor;
+			this.regimeActivator = regimeActivator;
 			
-			sceneLoader.OnSceneLoadProgressUpdated += OnRegimeSceneLoadProgressUpdated;
+			sceneLoader.OnProgressUpdated += OnRegimeProgressUpdated;
 		}
 
 		public void LoadDefaultRegime()
 		{
 			guiEngine.ShowProgressLoadingView();
-			asyncProcessor.StartCoroutine(LoadCommonScene());
+			LoadCommonScene();
 		}
 
-		private IEnumerator LoadCommonScene()
+		private void LoadCommonScene()
 			=> sceneLoader.LoadSceneAsync(
 				LoadedSceneType.Common, 
 				LoadSceneMode.Additive, 
-				0.5f, 
+				COMMON_SCENE_LOAD_PROGRESS, 
 				true,
 				OnCommonSceneLoaded);
 
 		private void OnCommonSceneLoaded()
 		{
 			sceneLoader.OnSceneLoadProgressFinished += OnRegimeSceneLoadProgressFinished;
-			asyncProcessor.StartCoroutine(LoadRegimeScene(GetDefaultRegimeScene()));
+
+			currentGameRegime = GetDefaultRegime();
+
+			LoadCurrentGameRegimeScene();
 		}
 
-		private IEnumerator LoadRegimeScene(LoadedSceneType loadedSceneType)
+		private void LoadCurrentGameRegimeScene()
 		{
-			yield return sceneLoader.LoadSceneAsync(
-				loadedSceneType, 
+			var regimeScene = GetRegimeScene(currentGameRegime);
+			
+			sceneLoader.LoadSceneAsync(
+				regimeScene, 
 				LoadSceneMode.Additive,
-				1f,
+				REGIME_SCENE_LOAD_PROGRESS,
 				false,
-				()=> sceneLoader.SetActiveScene(loadedSceneType));
+				LoadedRegimeSceneCallback(regimeScene));
 		}
+
+		private OnSceneLoadedDelegate LoadedRegimeSceneCallback(LoadedSceneType regimeScene)
+			=> ()=>
+			{
+				sceneLoader.SetActiveScene(regimeScene);
+				regimeActivator.ActivateRegime(REGIME_ACTIVATE_LOAD_PROGRESS, () => guiEngine.HideProgressLoadingView());
+			};
 
 		private void OnRegimeSceneLoadProgressFinished()
-		{
-			sceneLoader.ActivateLoadedAsyncScenes();
-			guiEngine.HideProgressLoadingView();
-		}
-
-		private void OnRegimeSceneLoadProgressUpdated(float progress)
+			=> sceneLoader.ActivateLoadedAsyncScenes();
+		
+		private void OnRegimeProgressUpdated(float progress)
 			=> guiEngine.UpdateProgressLoadingView(progress);
 		
-		private LoadedSceneType GetDefaultRegimeScene()
-			=> LoadedSceneType.Meta;
+		private static LoadedSceneType GetRegimeScene(GameRegime gameRegime)
+		{
+			return gameRegime switch
+			{
+				GameRegime.Meta => LoadedSceneType.Meta,
+				GameRegime.Core => LoadedSceneType.Core,
+				_ => throw new ArgumentOutOfRangeException(nameof(gameRegime), gameRegime, null)
+			};
+		}
+		
+		private GameRegime GetDefaultRegime()
+			=> GameRegime.Meta;
 	}
 }

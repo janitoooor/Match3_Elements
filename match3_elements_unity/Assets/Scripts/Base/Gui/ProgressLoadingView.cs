@@ -7,14 +7,40 @@ namespace Base.Gui
 	{
 		[SerializeField]
 		private Image progressBar;
+
+		private float maxWidth;
 		
-		public void UpdateProgress(float progress)
-			=> progressBar.fillAmount = progress;
+		private float currentProgress;
+		
+		private void Awake()
+		{
+			maxWidth = progressBar.rectTransform.rect.width;
+			UpdateProgressView();
+		}
+
+		public void IncreaseProgress(float progressDelta)
+			=> UpdateProgress(currentProgress + progressDelta);
+
+		private void UpdateProgressView()
+			=> progressBar.rectTransform.sizeDelta = CalculateRectTransformSizeDelta();
+
+		private Vector2 CalculateRectTransformSizeDelta()
+			=> new(currentProgress * maxWidth, progressBar.rectTransform.sizeDelta.y);
 
 		public void Hide()
 			=> gameObject.SetActive(false);
 
 		public void Show()
-			=> gameObject.SetActive(true);
+		{
+			UpdateProgress(0f);
+
+			gameObject.SetActive(true);
+		}
+
+		private void UpdateProgress(float newProgress)
+		{
+			currentProgress = newProgress;
+			UpdateProgressView();
+		}
 	}
 }

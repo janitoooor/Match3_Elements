@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace Base
 {
@@ -12,26 +13,36 @@ namespace Base
     /// </summary>
     public sealed class UnitySceneManagementSceneLoader : ISceneLoader
     {
-        public event OnSceneLoadProgressFinishedDelegate OnSceneLoadProgressFinished;
+        private const float MAX_SCENE_LOAD_PROGRESS = 0.9f;
         
-        public event OnSceneLoadProgressUpdatedDelegate OnSceneLoadProgressUpdated;
+        public event OnSceneLoadProgressFinishedDelegate OnSceneLoadProgressFinished;
+        public event OnProgressUpdatedDelegate OnProgressUpdated;
+
+        private readonly IAsyncProcessor asyncProcessor;
         
         private AsyncOperation currentAsyncOperation;
     
         private bool isLoading;
-    
-        private const float MAX_SCENE_LOAD_PROGRESS = 0.9f;
+
+        [Inject]
+        public UnitySceneManagementSceneLoader(IAsyncProcessor asyncProcessor)
+            => this.asyncProcessor = asyncProcessor;
 
         public void SetActiveScene(LoadedSceneType loadedSceneType)
             => SceneManager.SetActiveScene(SceneManager.GetSceneByName(loadedSceneType.ToString()));
 
-        public IEnumerator LoadSceneAsync(LoadedSceneType singleLoadedSceneType, LoadSceneMode loadSceneMode,
+        public void LoadSceneAsync(LoadedSceneType singleLoadedSceneType, LoadSceneMode loadSceneMode,
             float maxProgress = 1f, bool allowSceneActivation = false, OnSceneLoadedDelegate loadedCallback = null)
         {
             if (!CanLoadScene(singleLoadedSceneType, out var singleSceneName))
-                yield break;
+                return;
             
-            yield return LoadSceneAsyncInternal(singleSceneName, loadSceneMode, maxProgress, allowSceneActivation, loadedCallback);
+            asyncProcessor.StartCoroutine(LoadSceneAsyncInternal(
+                singleSceneName, 
+                loadSceneMode, 
+                maxProgress,
+                allowSceneActivation,
+                loadedCallback));
         }
         private bool CanLoadScene(LoadedSceneType singleLoadedSceneType, out string sceneName)
         {
@@ -57,7 +68,7 @@ namespace Base
             bool allowSceneActivation , OnSceneLoadedDelegate loadedCallback)
         {
             currentAsyncOperation = SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
-
+            
             if (currentAsyncOperation == null)
                 yield break;
         
@@ -67,7 +78,7 @@ namespace Base
             
             while (!currentAsyncOperation.isDone)
             {
-                OnSceneLoadProgressUpdated?.Invoke(CalculateSceneLoadProgress(maxProgress));
+                OnProgressUpdated?.Invoke(CalculateSceneLoadProgress(maxProgress));
 
                 if (currentAsyncOperation.progress >= MAX_SCENE_LOAD_PROGRESS)
                     OnSceneLoadProgressFinished?.Invoke();
@@ -82,7 +93,7 @@ namespace Base
         }
 
         private float CalculateSceneLoadProgress(float maxProgress)
-            => Mathf.Clamp(currentAsyncOperation.progress / MAX_SCENE_LOAD_PROGRESS, 0, maxProgress);
+            => currentAsyncOperation.progress / MAX_SCENE_LOAD_PROGRESS *  maxProgress;
 
         public void ActivateLoadedAsyncScenes()
         {
