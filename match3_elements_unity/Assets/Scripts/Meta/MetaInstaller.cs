@@ -11,11 +11,21 @@ namespace Meta
 
 		public override void InstallBindings()
 		{
-			Container.BindInterfacesTo<MetaMainWidgetAsyncDataInitializer>().AsSingle();
-			
-			Container.Bind<MetaMainWidgetGameRegimeSyncStartAction>().AsSingle().NonLazy();
+			BindBaseMetaEntities();
 
-			Container.Bind<IMetaPrefabsContainer>().FromInstance(metaPrefabsContainer).AsSingle();
+			BindMainWidget();
+		}
+
+		private void BindBaseMetaEntities()
+			=> Container.Bind<IMetaPrefabsContainer>().FromInstance(metaPrefabsContainer).AsSingle();
+
+		private void BindMainWidget()
+		{
+			Container.Bind<MetaMainWidgetGameRegimeSyncStartAction>().AsSingle().NonLazy();
+			
+			Container.BindInterfacesTo<MetaMainWidgetAsyncDataInitializer>().AsSingle();
+
+			Container.Bind<IMetaMainWidgetModel>().To<MetaMainWidgetModel>().AsSingle();
 		}
 	}
 }
