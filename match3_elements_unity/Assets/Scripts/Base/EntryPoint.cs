@@ -20,7 +20,7 @@ namespace Base
 		{
 			Container.Bind<IAsyncProcessor>().FromInstance(this);
 			
-			Container.Bind<ISceneLoader>().To<UnitySceneManagementSceneLoader>().AsSingle();
+			Container.Bind<ISceneLoadProvider>().To<UnitySceneManagementSceneLoadProvider>().AsSingle();
 			
 			Container.Bind<IGuiEngine>().FromInstance(guiEngine);
 			

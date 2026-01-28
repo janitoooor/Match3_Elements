@@ -10,12 +10,13 @@ namespace Base
 		public void AddGameRegimeSyncStartAction(IGameRegimeSyncStartAction regimeStartAction) 
 			=> gameRegimeStartActions.Add(regimeStartAction);
 			
-		public void Initialize()
+		public void Initialize(GameRegimeSyncStartActionChainFinishedDelegate finishedCallback)
 		{
 			foreach (var regimeStartAction in GetOrderedGameRegimes())
 				regimeStartAction.Perform();
 			
 			gameRegimeStartActions.Clear();
+			finishedCallback?.Invoke();
 		}
 
 		private IOrderedEnumerable<IGameRegimeSyncStartAction> GetOrderedGameRegimes()

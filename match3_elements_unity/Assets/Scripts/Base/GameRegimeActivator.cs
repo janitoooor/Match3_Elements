@@ -4,6 +4,12 @@ namespace Base
 {
 	public sealed class GameRegimeActivator : IGameRegimeActivator
 	{
+		public event ProgressUpdatedDelegate OnProgressUpdated
+		{
+			add => asyncDataInitializerChain.OnProgressUpdated += value;
+			remove => asyncDataInitializerChain.OnProgressUpdated -= value;
+		}
+		
 		private readonly IGameRegimeSyncStartActionChain gameRegimeSyncStartActionChain; 
 		private readonly IAsyncDataInitializerChain asyncDataInitializerChain;
 
@@ -17,14 +23,8 @@ namespace Base
 		}
 
 		public void ActivateRegime(float maxProgress, AsyncDataInitializerChainFinishedCallback finishedCallback)
-			=> asyncDataInitializerChain.Initialize(maxProgress, InitializedCallback(finishedCallback));
-
-		private AsyncDataInitializerChainFinishedCallback InitializedCallback(
-			AsyncDataInitializerChainFinishedCallback finishedCallback)
-			=> () =>
-			{
-				gameRegimeSyncStartActionChain.Initialize();
-				finishedCallback?.Invoke();
-			};
+			=> asyncDataInitializerChain.Initialize(
+				maxProgress, 
+				()=> gameRegimeSyncStartActionChain.Initialize(()=> finishedCallback?.Invoke()));
 	}
 }

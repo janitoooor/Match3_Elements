@@ -1,6 +1,6 @@
 namespace Base
 {
-	public interface IAsyncDataInitializerChainFiller : IProgressUpdatable
+	public interface IAsyncDataInitializerChainFiller
 	{
 		void AddAsyncDataInitializer(IAsyncDataInitializer dataInitializer);
 	}

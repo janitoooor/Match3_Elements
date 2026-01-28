@@ -1,9 +1,9 @@
 namespace Base
 {
-	public delegate void OnProgressUpdatedDelegate(float progress);
+	public delegate void ProgressUpdatedDelegate(float progress);
 	
 	public interface IProgressUpdatable
 	{
-		event OnProgressUpdatedDelegate OnProgressUpdated;
+		event ProgressUpdatedDelegate OnProgressUpdated;
 	}
 }

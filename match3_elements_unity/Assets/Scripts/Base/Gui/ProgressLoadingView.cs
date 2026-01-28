@@ -39,7 +39,7 @@ namespace Base.Gui
 
 		private void UpdateProgress(float newProgress)
 		{
-			currentProgress = newProgress;
+			currentProgress = Mathf.Clamp01(newProgress);
 			UpdateProgressView();
 		}
 	}

@@ -1,7 +1,8 @@
 namespace Base
 {
+	public delegate void GameRegimeSyncStartActionChainFinishedDelegate();
 	public interface IGameRegimeSyncStartActionChain
 	{
-		void Initialize();
+		void Initialize(GameRegimeSyncStartActionChainFinishedDelegate finishedCallback);
 	}
 }

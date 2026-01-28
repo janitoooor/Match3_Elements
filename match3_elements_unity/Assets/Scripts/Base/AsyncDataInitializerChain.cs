@@ -7,7 +7,7 @@ namespace Base
 {
 	public sealed class AsyncDataInitializerChain : IAsyncDataInitializerChain, IAsyncDataInitializerChainFiller
 	{
-		public event OnProgressUpdatedDelegate OnProgressUpdated;
+		public event ProgressUpdatedDelegate OnProgressUpdated;
 		
 		private List<IAsyncDataInitializer> dataInitializers = new (0);
 		private readonly IAsyncProcessor asyncProcessor;
@@ -27,6 +27,18 @@ namespace Base
 		{
 			yield return null;
 			
+			if (dataInitializers.Count == 0)
+				OnProgressUpdated?.Invoke(maxProgress);
+			else
+				yield return InitializeData(maxProgress);
+			
+			yield return null;
+			
+			finishedCallback?.Invoke();
+		}
+
+		private IEnumerator InitializeData(float maxProgress)
+		{
 			dataInitializers = dataInitializers.OrderByDescending(i => i.priority).ToList();
 			
 			var deltaProgress = maxProgress / dataInitializers.Count;
@@ -35,8 +47,6 @@ namespace Base
 				yield return Initialize(dataInitializer, deltaProgress);
 			
 			dataInitializers.Clear();
-			
-			finishedCallback?.Invoke();
 		}
 
 		private IEnumerator Initialize(IAsyncDataInitializer dataInitializer, float deltaProgress)
