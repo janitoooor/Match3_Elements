@@ -55,11 +55,16 @@ namespace Core
 			Container.BindInterfacesTo<GridField>().FromInstance(gridField).AsSingle();
 			
 			Container.Bind<IBlocksGenerator>().To<BlocksGenerator>().AsSingle();
+			
+			Container.Bind<IBlocksOnGridFieldProvider>().To<BlocksOnGridFieldProvider>().AsSingle();
+			Container.Bind<IBlocksOnGridSwipeModel>().To<BlocksOnGridSwipeModel>().AsSingle();
+			
+			Container.Bind<BlocksSwipeInputController>().AsSingle().NonLazy();
 		}
 
 		private void BindBaseCoreEntities()
 		{
-			Container.BindInterfacesTo<InputController>().AsSingle();
+			Container.BindInterfacesTo<SwipeInputController>().AsSingle();
 			
 #if UNITY_EDITOR
 			Container.Bind<ITickable>().To<CoreCameraGridFieldFitGameRegimeSyncStartAction>().AsSingle();

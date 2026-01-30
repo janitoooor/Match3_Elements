@@ -1,15 +1,14 @@
-using Core.Enums;
 using UnityEngine;
 
 namespace Core.Input
 {
 	public delegate void SwipeDelegate(
-		SwipeDirection swipeDirection,
+		SwipeDirectionData swipeDirectionData,
 		Vector2 startTouchScreenPosition, 
 		Vector2 currentTouchScreenPosition);
 	
-	public interface IInputController
+	public interface ISwipeInputEvent
 	{
-		event SwipeDelegate OnSwipe;
+		event SwipeDelegate OnInputSwipe;
 	}
 }

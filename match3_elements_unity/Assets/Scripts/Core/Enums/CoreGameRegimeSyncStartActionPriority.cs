@@ -6,6 +6,6 @@ namespace Core.Enums
 		CameraGridFieldFit,
 		
 		
-		Input = byte.MaxValue, 
+		SwipeInputInitialize = byte.MaxValue, 
 	}
 }

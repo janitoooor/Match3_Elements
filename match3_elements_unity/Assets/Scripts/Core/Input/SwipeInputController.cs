@@ -9,12 +9,12 @@ using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 namespace Core.Input
 {
-    public sealed class InputController : GameRegimeSyncStartAction, 
-        IInputController, 
+    public sealed class SwipeInputController : GameRegimeSyncStartAction, 
+        ISwipeInputEvent, 
         IDisposable, 
         ITickable
     {
-        public event SwipeDelegate OnSwipe;
+        public event SwipeDelegate OnInputSwipe;
         
         private const float MAX_SWIPE_TIME = 0.5f;
         private const float MIN_SWIPE_TIME = 0.05f;
@@ -30,7 +30,7 @@ namespace Core.Input
 
         private float swipeDuration => Time.time - touchStartTime;
         
-        public override int priority => (int)CoreGameRegimeSyncStartActionPriority.Input;
+        public override int priority => (int)CoreGameRegimeSyncStartActionPriority.SwipeInputInitialize;
 
         public override void Perform()
         {
@@ -128,21 +128,33 @@ namespace Core.Input
             swipeDelta.Normalize();
             
             var isHorizontalSwipe = Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y);
-        
-            if (isHorizontalSwipe)
-                CallSwipeEvent(swipeDelta.x > 0 ? SwipeDirection.Right : SwipeDirection.Left);
-            else
-                CallSwipeEvent(swipeDelta.y > 0 ? SwipeDirection.Up : SwipeDirection.Down);
-        }
-        
-        private void CallSwipeEvent(SwipeDirection swipeDirection)
-        {
+
+            var swipeDirectionType = GetSwipeDirectionType(swipeDelta, isHorizontalSwipe);
+            
 #if UNITY_EDITOR
-            Debug.Log($"====> Swipe {swipeDirection.ToString()}");
+            Debug.Log($"====> Swipe {swipeDirectionType.ToString()}");
 #endif
-            OnSwipe?.Invoke(swipeDirection, startTouchPosition, currentTouchPosition);
+            OnInputSwipe?.Invoke(GetSwipeDirectionData(swipeDirectionType), startTouchPosition, currentTouchPosition);
         }
 
+        private static SwipeDirectionData GetSwipeDirectionData(SwipeDirectionType swipeDirectionType)
+            => new(swipeDirectionType, GetSwipeDirectionVector(swipeDirectionType));
+
+        private static SwipeDirectionType GetSwipeDirectionType(Vector2 swipeDelta, bool isHorizontalSwipe)
+            => isHorizontalSwipe 
+                ? swipeDelta.x > 0 ? SwipeDirectionType.Right : SwipeDirectionType.Left
+                : swipeDelta.y > 0 ? SwipeDirectionType.Up : SwipeDirectionType.Down;
+
+        private static Vector2Int GetSwipeDirectionVector(SwipeDirectionType swipeDirectionType)
+            => swipeDirectionType switch
+            {
+                SwipeDirectionType.Up => Vector2Int.up,
+                SwipeDirectionType.Down => Vector2Int.down,
+                SwipeDirectionType.Left => Vector2Int.left,
+                SwipeDirectionType.Right => Vector2Int.right,
+                _ => throw new ArgumentOutOfRangeException(nameof(swipeDirectionType), swipeDirectionType, null)
+            };
+        
         public void Dispose()
         {
             EnhancedTouchSupport.Disable();

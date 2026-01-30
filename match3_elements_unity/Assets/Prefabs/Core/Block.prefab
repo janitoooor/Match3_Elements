@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 564808219644879074}
   - component: {fileID: 2933484621995500568}
+  - component: {fileID: 4623955756965753681}
+  - component: {fileID: 4238495807247762634}
   m_Layer: 6
   m_Name: Block
   m_TagString: Untagged
@@ -30,7 +32,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4076657018008087203}
   - {fileID: 8014737009444399199}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -46,47 +47,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beaa3e87f3d14c23a8db87bbabd42799, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.Blocks.BlockEntity
+  moveDuration: 0.2
   animationPlayer: {fileID: 4231260464883065778}
---- !u!1 &1295115078440418409
-GameObject:
+--- !u!114 &4623955756965753681
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4076657018008087203}
-  - component: {fileID: 4056814271233161653}
-  - component: {fileID: 534402008439307516}
-  m_Layer: 6
-  m_Name: PhysicsCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4076657018008087203
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1295115078440418409}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 564808219644879074}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &4056814271233161653
+  m_GameObject: {fileID: 961422849878024636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1579e403b5db41c9b92256f31ec25606, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.Blocks.BlockSwipeCollider
+  <blockEntity>k__BackingField: {fileID: 2933484621995500568}
+--- !u!61 &4238495807247762634
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1295115078440418409}
+  m_GameObject: {fileID: 961422849878024636}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -126,33 +108,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.9785138, y: 1.9453694}
   m_EdgeRadius: 0
---- !u!50 &534402008439307516
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1295115078440418409}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 1
-  m_Mass: 3.8489401
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 192
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 55
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 5
 --- !u!1 &3127526043387273729
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,7 +118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1142759487513501138}
   - component: {fileID: 1631434244114959794}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Animation_Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -252,7 +207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4966991356354484800}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Animation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +240,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8014737009444399199}
   - component: {fileID: 4231260464883065778}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: View
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,6 +1,6 @@
 namespace Core.Enums
 {
-	public enum SwipeDirection : byte
+	public enum SwipeDirectionType : byte
 	{
 		Up,
 		Down,

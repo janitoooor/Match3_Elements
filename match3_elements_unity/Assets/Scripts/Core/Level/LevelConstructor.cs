@@ -10,26 +10,26 @@ namespace Core.Level
 	{
 		private const byte MAX_SPAWNED_PER_FRAME = 10;
 		
-		private readonly IGridField gridField;
+		private readonly IBlocksOnGridFieldProvider blocksOnGridFieldProvider;
 		private readonly IBlocksGenerator blocksGenerator;
 
 		[Inject]
-		public LevelConstructor(IGridField gridField, IBlocksGenerator blocksGenerator)
+		public LevelConstructor(IBlocksOnGridFieldProvider blocksOnGridFieldProvider, IBlocksGenerator blocksGenerator)
 		{
-			this.gridField = gridField;
+			this.blocksOnGridFieldProvider = blocksOnGridFieldProvider;
 			this.blocksGenerator = blocksGenerator;
 		}
 
 		public IEnumerator ConstructLevel(ILevelData levelData)
 		{
-			gridField.PrepareGridSize(levelData.gridSize.x, levelData.gridSize.y);
+			blocksOnGridFieldProvider.ChangeGridSize(levelData.gridSize.x, levelData.gridSize.y);
 
 			byte spawnedPerFrame = 0;
 			
 			for (var i = 0; i < levelData.levelBlockData.Count; i++)
 			{
 				var blockData = levelData.levelBlockData[i];
-				gridField.PlaceBlockAtCell(blocksGenerator.GenerateBlock(blockData.skin), blockData.cellPos);
+				blocksOnGridFieldProvider.AddBlockOnGrid(blocksGenerator.GenerateBlock(blockData.skin), blockData.cellPos);
 				spawnedPerFrame++;
 
 				if (spawnedPerFrame > MAX_SPAWNED_PER_FRAME)
