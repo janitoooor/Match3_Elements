@@ -2,6 +2,7 @@ using Core.Animation.Configs;
 using Core.Blocks;
 using Core.CoreCamera;
 using Core.Grid;
+using Core.Input;
 using Core.Interfaces;
 using Core.Level;
 using Core.Level.Configs;
@@ -58,6 +59,8 @@ namespace Core
 
 		private void BindBaseCoreEntities()
 		{
+			Container.BindInterfacesTo<InputController>().AsSingle();
+			
 #if UNITY_EDITOR
 			Container.Bind<ITickable>().To<CoreCameraGridFieldFitGameRegimeSyncStartAction>().AsSingle();
 #else
