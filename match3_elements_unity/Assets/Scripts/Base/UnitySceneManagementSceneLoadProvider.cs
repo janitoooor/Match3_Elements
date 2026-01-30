@@ -103,13 +103,6 @@ namespace Base
                 OnProgressUpdated?.Invoke(deltaProgress);
             }
         }
-        
-        public void ActivateLoadedAsyncScenes()
-        {
-            if (currentAsyncLoadOperation != null)
-                currentAsyncLoadOperation.allowSceneActivation = true;
-        }
-        
         private static bool SceneExists(string sceneName)
         {
             for (var i = 0; i < SceneManager.sceneCountInBuildSettings; i++)

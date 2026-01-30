@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
+using Base;
 using Core.Blocks;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ namespace Core.SpawnContainer
 		[SerializeField]
 		private SpawnContainer[] spawnContainers;
 		
-		private readonly Dictionary<SpawnContainerType, SpawnContainer> spawnContainersCache = new();
+		private readonly Dictionary<SpawnContainerType, SpawnContainer> cache = new();
 		
 		public T SpawnInContainer<T>(T prefab, SpawnContainerType containerType) where T : Object
 			=> Instantiate(prefab, GetSpawnContainer(containerType));
@@ -19,13 +19,10 @@ namespace Core.SpawnContainer
 			=> GetSpawnContainer(containerType).GetComponentsInChildren<T>(true);
 
 		private Transform GetSpawnContainer(SpawnContainerType containerType)
-		{
-			if (spawnContainersCache.TryGetValue(containerType, out var container))
-				return container.transform;
-			
-			container = spawnContainers.First(c => c.containerType == containerType);
-			spawnContainersCache.Add(containerType, container);
-			return container.transform;
-		}
+			=> cache.GetOrAddFromArray(
+				containerType,
+				spawnContainers,
+				a => a.containerType,
+				a => a).transform;
 	}
 }

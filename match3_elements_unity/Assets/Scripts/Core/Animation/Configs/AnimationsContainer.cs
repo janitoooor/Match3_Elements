@@ -24,27 +24,40 @@ namespace Core.Animation.Configs
 		
 		public IReadOnlyList<Sprite> animationSprites => animationSpritesInternal;
 	}
-	
+
 	[Serializable]
 	public sealed class AnimationSkinData : IAnimationSkinData
 	{
 		[field: SerializeField]
 		public AnimationSkin animationSkin { get; private set; }
-		
+    
 		[SerializeField, ArrayElementTitle("animationType")]
 		private AnimationData[] animationsData;
-		
+    
+		private readonly Dictionary<AnimationType, IAnimationData> cache = new();
+    
 		public IAnimationData GetAnimationData(AnimationType animationType)
-			=> animationsData.FirstOrDefault(a => a.animationType == animationType);
+			=> cache.GetOrAddFromArray(
+				animationType,
+				animationsData,
+				a => a.animationType,
+				a => a
+			);
 	}
-	
+
 	[CreateAssetMenu(menuName = "Match3/Core/Create Animations Container", order = 0, fileName = "AnimationsContainer")]
 	public sealed class AnimationsContainer : ScriptableObject, IAnimationsContainer
 	{
 		[SerializeField, ArrayElementTitle("animationSkin")]
 		private AnimationSkinData[] animations;
 
+		private readonly Dictionary<AnimationSkin, IAnimationSkinData> cache = new();
+    
 		public IAnimationSkinData GetAnimationSkinData(AnimationSkin animationSkin)
-			=> animations.FirstOrDefault(a => a.animationSkin == animationSkin);
+			=> cache.GetOrAddFromArray(
+				animationSkin,
+				animations,
+				a => a.animationSkin,
+				a => a);
 	}
 }
