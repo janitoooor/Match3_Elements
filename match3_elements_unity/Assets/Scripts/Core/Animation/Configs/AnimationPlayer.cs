@@ -1,5 +1,4 @@
 using System.Collections;
-using Core.Animation.Enums;
 using UnityEngine;
 
 namespace Core.Animation.Configs
@@ -13,21 +12,9 @@ namespace Core.Animation.Configs
 		
 		[SerializeField]
 		private SpriteRenderer animationSpriteRenderer;
-
-		private Coroutine animationCoroutine;
-
-		private IAnimationSkinData animationSkinData;
 		
-		private void Awake()
-		{
-			animationSkinData = animationsContainer.GetAnimationSkinData(AnimationSkin.Fire);
-
-			PlayAnimation(animationSkinData.GetAnimationData(AnimationType.Idle));
-		}
-
-		private void OnMouseDown()
-			=> PlayAnimation(animationSkinData.GetAnimationData(AnimationType.Destroy), ()=> gameObject.SetActive(false));
-
+		private Coroutine animationCoroutine;
+		
 		public void PlayAnimation(IAnimationData animationData, AnimationFinishedDelegate finishedCallback = null)
 		{
 			if (animationCoroutine != null)

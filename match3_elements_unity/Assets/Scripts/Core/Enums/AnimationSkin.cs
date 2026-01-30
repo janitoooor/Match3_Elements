@@ -1,4 +1,4 @@
-namespace Core.Animation.Enums
+namespace Core.Enums
 {
 	public enum AnimationSkin : byte
 	{

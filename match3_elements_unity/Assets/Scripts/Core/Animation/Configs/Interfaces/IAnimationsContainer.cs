@@ -1,4 +1,4 @@
-using Core.Animation.Enums;
+using Core.Enums;
 
 namespace Core.Animation.Configs
 {

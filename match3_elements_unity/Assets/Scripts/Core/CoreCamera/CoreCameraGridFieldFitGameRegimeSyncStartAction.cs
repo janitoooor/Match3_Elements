@@ -1,0 +1,60 @@
+using Base;
+using Core.Enums;
+using Core.Grid;
+using UnityEngine;
+using Zenject;
+
+namespace Core.CoreCamera
+{
+	public sealed class CoreCameraGridFieldFitGameRegimeSyncStartAction : GameRegimeSyncStartAction, ITickable
+	{
+		private readonly IGridFieldInfo gridFieldInfo;
+		private readonly Camera camera;
+		public override int priority => (int)CoreGameRegimeSyncStartActionPriority.CameraGridFieldFit;
+
+		[Inject]
+		public CoreCameraGridFieldFitGameRegimeSyncStartAction(IGridFieldInfo gridFieldInfo, Camera camera)
+		{
+			this.gridFieldInfo = gridFieldInfo;
+			this.camera = camera;
+		}
+
+		public override void Perform()
+			=> FitCameraToGridField();
+
+		public void Tick()
+			=> FitCameraToGridField();
+
+		private void FitCameraToGridField()
+		{
+			ChangeCameraOrthographicSizeForGrid();
+			CenterCameraOnGrid();
+		}
+
+		private void ChangeCameraOrthographicSizeForGrid()
+		{
+			var gridWidth = gridFieldInfo.GetGridWidth();
+			var gridHeight = gridFieldInfo.GetGridHeight();
+			
+			var screenAspect = Screen.width / (float)Screen.height;
+			var targetAspect = gridWidth / gridHeight;
+
+			if (targetAspect > screenAspect)
+				camera.orthographicSize = gridWidth / (2f * screenAspect);
+			else
+				camera.orthographicSize = gridHeight / 2f;
+		}
+		
+		private void CenterCameraOnGrid()
+		{
+			var gridCenter = gridFieldInfo.GetGridCenter();
+			var cameraPos = camera.transform.position;
+            
+			camera.transform.position = new Vector3(
+				gridCenter.x,
+				gridCenter.y,
+				cameraPos.z
+			);
+		}
+	}
+}

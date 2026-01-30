@@ -1,9 +1,9 @@
-using Core.Animation.Enums;
+using Core.Enums;
 
 namespace Core.Animation.Configs
 {
 	public interface IAnimationSkinData
 	{
-		AnimationData GetAnimationData(AnimationType animationType);
+		IAnimationData GetAnimationData(AnimationType animationType);
 	}
 }

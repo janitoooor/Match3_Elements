@@ -16,7 +16,7 @@ MonoBehaviour:
   - <animationSkin>k__BackingField: 0
     animationsData:
     - <animationType>k__BackingField: 0
-      <animationFrameRate>k__BackingField: 4
+      <animationFrameRate>k__BackingField: 6
       <isLoopAnimation>k__BackingField: 1
       animationSpritesInternal:
       - {fileID: 21300000, guid: b3c47ccb76d0d49869e17d25c4666706, type: 3}
@@ -62,3 +62,49 @@ MonoBehaviour:
       - {fileID: 21300000, guid: c917af801694b45a3a65d52112a6e340, type: 3}
       - {fileID: 21300000, guid: fe465e1dbdb3345d29705a7adecda736, type: 3}
       - {fileID: 21300000, guid: a8d8bdbf88bbd4b9db1683b84a51f0cc, type: 3}
+  - <animationSkin>k__BackingField: 1
+    animationsData:
+    - <animationType>k__BackingField: 0
+      <animationFrameRate>k__BackingField: 6
+      <isLoopAnimation>k__BackingField: 1
+      animationSpritesInternal:
+      - {fileID: 21300000, guid: 6c580f68a6c69478cb8c13226b7c088e, type: 3}
+      - {fileID: 21300000, guid: b7e7ab02b299749d9b19257726b4590c, type: 3}
+      - {fileID: 21300000, guid: 306a5b7f903a84195930cbc6509d6af2, type: 3}
+      - {fileID: 21300000, guid: 760952de73fc6463889b4d07a892862b, type: 3}
+      - {fileID: 21300000, guid: 8c255be64b5fa432cb3134bae9745cf4, type: 3}
+      - {fileID: 21300000, guid: d203de51b67014a0291e5159f50b4033, type: 3}
+      - {fileID: 21300000, guid: 96226de76a86a4cd69e5f15ff4774f72, type: 3}
+      - {fileID: 21300000, guid: 99174b21f3b434d4cb376ad69ba579c3, type: 3}
+      - {fileID: 21300000, guid: 95561672a59dc4d019b03188553b1493, type: 3}
+      - {fileID: 21300000, guid: 64d5a46bc57bf4a5fa4a5d6b2c86addc, type: 3}
+      - {fileID: 21300000, guid: 549adaaed43664c36b65d5935b79d140, type: 3}
+      - {fileID: 21300000, guid: c928a50ffd49b4471bf9eb15f4308f78, type: 3}
+      - {fileID: 21300000, guid: 82e7afc399ec6444d959d2079a40a1ba, type: 3}
+      - {fileID: 21300000, guid: 5c439d718f5b248cebb04e823ab5f37e, type: 3}
+      - {fileID: 21300000, guid: 9e3ebfc260b0445db92c689ce770ea5f, type: 3}
+      - {fileID: 21300000, guid: 246802b423faf44558720c62d7d2d83f, type: 3}
+      - {fileID: 21300000, guid: 3070b3d924004447295a598dab760816, type: 3}
+    - <animationType>k__BackingField: 1
+      <animationFrameRate>k__BackingField: 4
+      <isLoopAnimation>k__BackingField: 0
+      animationSpritesInternal:
+      - {fileID: 21300000, guid: 6e1a9a90a774b4861808e1426e326699, type: 3}
+      - {fileID: 21300000, guid: 40218d500eaad4ff496ae3d5946c53c4, type: 3}
+      - {fileID: 21300000, guid: 4cc8c8aff43d6422a8c63e737c865121, type: 3}
+      - {fileID: 21300000, guid: 119a100a243a94477a4536195169e715, type: 3}
+      - {fileID: 21300000, guid: 544fdd2d3b8e643338dca41a482584b2, type: 3}
+      - {fileID: 21300000, guid: a9b1b689864ac4d5fba8f96238f1ef7f, type: 3}
+      - {fileID: 21300000, guid: 824a2358ec176493a839e284c3420f6f, type: 3}
+      - {fileID: 21300000, guid: d498a323f854d4e51b14e9815c3f2389, type: 3}
+      - {fileID: 21300000, guid: 91b50bad1fe754f14a11bae67523aff1, type: 3}
+      - {fileID: 21300000, guid: a61aced859d994b8194cdf287a341886, type: 3}
+      - {fileID: 21300000, guid: ca5af5c2947274103a87bc82efe96038, type: 3}
+      - {fileID: 21300000, guid: 6c3372dccdabc4d59a3c7a641aae9624, type: 3}
+      - {fileID: 21300000, guid: 82eef2a3bc2e44fd48bf1331f0c6835f, type: 3}
+      - {fileID: 21300000, guid: 92df7c1d35e8d4eeca91c8d051ae5d49, type: 3}
+      - {fileID: 21300000, guid: a04440d10f2ff462d9720ff63c59982d, type: 3}
+      - {fileID: 21300000, guid: d6928e85ef19b439db17f4306edacf70, type: 3}
+      - {fileID: 21300000, guid: 145757af1fe5a4337a810bd4edbbc343, type: 3}
+      - {fileID: 21300000, guid: e4ffde8b042d3475cb701145866e2f79, type: 3}
+      - {fileID: 21300000, guid: 089ae7488a40c40a9a40b2f9604d90b5, type: 3}

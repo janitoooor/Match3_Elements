@@ -65,6 +65,8 @@ namespace Base
 					return titleNameProp.vector3Value.ToString();
 				case SerializedPropertyType.Vector4:
 					return titleNameProp.vector4Value.ToString();
+				case SerializedPropertyType.Vector2Int:
+					return titleNameProp.vector2IntValue.ToString();
 			}
 			
 			return string.Empty;

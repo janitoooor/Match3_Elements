@@ -1,8 +1,8 @@
-namespace Core.Animation.Enums
+namespace Core.Enums
 {
 	public enum AnimationType : byte
 	{
 		Idle,
-		Destroy
+		Dead
 	}
 }

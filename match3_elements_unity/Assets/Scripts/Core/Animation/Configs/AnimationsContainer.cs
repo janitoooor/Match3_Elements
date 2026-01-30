@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Base;
-using Core.Animation.Enums;
+using Core.Enums;
 using UnityEngine;
 
 namespace Core.Animation.Configs
@@ -34,7 +34,7 @@ namespace Core.Animation.Configs
 		[SerializeField, ArrayElementTitle("animationType")]
 		private AnimationData[] animationsData;
 		
-		public AnimationData GetAnimationData(AnimationType animationType)
+		public IAnimationData GetAnimationData(AnimationType animationType)
 			=> animationsData.FirstOrDefault(a => a.animationType == animationType);
 	}
 	
