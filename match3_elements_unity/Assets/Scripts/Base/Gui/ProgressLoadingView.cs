@@ -7,22 +7,25 @@ namespace Base.Gui
 	{
 		[SerializeField]
 		private Image progressBar;
+		
+		[SerializeField]
+		private Image maxBar;
 
 		private float maxWidth;
 		
 		private float currentProgress;
-		
-		private void Awake()
-		{
-			maxWidth = progressBar.rectTransform.rect.width;
-			UpdateProgressView();
-		}
+
+		private void Start()
+			=> UpdateProgressView();
 
 		public void IncreaseProgress(float progressDelta)
 			=> UpdateProgress(currentProgress + progressDelta);
 
 		private void UpdateProgressView()
-			=> progressBar.rectTransform.sizeDelta = CalculateRectTransformSizeDelta();
+		{
+			maxWidth = maxBar.rectTransform.rect.width;
+			progressBar.rectTransform.sizeDelta = CalculateRectTransformSizeDelta();
+		}
 
 		private Vector2 CalculateRectTransformSizeDelta()
 			=> new(currentProgress * maxWidth, progressBar.rectTransform.sizeDelta.y);
