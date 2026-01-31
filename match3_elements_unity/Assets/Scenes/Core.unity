@@ -383,6 +383,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 564808219644879074, guid: 8f68380b4400b479bb6df1b7b4d20b39, type: 3}
   m_PrefabInstance: {fileID: 198068247}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &277425638
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 277425639}
+  - component: {fileID: 277425640}
+  m_Layer: 0
+  m_Name: LevelsInstaller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &277425639
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277425638}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 309641360}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &277425640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277425638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d90602e70d6407880347813b9895646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.Level.LevelsInstaller
+  levelsContainer: {fileID: 11400000, guid: b0f9a877e014b430aa382a08f653c227, type: 2}
+  animationsContainer: {fileID: 11400000, guid: 728c9de15ee0645d79b1d19ad524dd19, type: 2}
+  gridField: {fileID: 437101231}
 --- !u!1 &309641359
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +461,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 591247651}
+  - {fileID: 277425639}
+  - {fileID: 471511450}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &309641361
@@ -431,6 +480,8 @@ MonoBehaviour:
   _scriptableObjectInstallers: []
   _monoInstallers:
   - {fileID: 591247652}
+  - {fileID: 277425640}
+  - {fileID: 471511451}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -462,6 +513,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a44f36b91c314064bcb8945f1504a3ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.Grid.SimpleGrid
+--- !u!1 &471511449
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 471511450}
+  - component: {fileID: 471511451}
+  m_Layer: 0
+  m_Name: GuiInstaller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &471511450
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471511449}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 309641360}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &471511451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471511449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f086955af7a4cbcbbf0e26ceb4cc34f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.MainWidget.CoreGuiInstaller
 --- !u!1 &591247650
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,9 +602,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.CoreInstaller
   corePrefabsContainer: {fileID: 11400000, guid: 01883335419de4dcf863306b361227e5, type: 2}
-  levelsContainer: {fileID: 11400000, guid: b0f9a877e014b430aa382a08f653c227, type: 2}
-  animationsContainer: {fileID: 11400000, guid: 728c9de15ee0645d79b1d19ad524dd19, type: 2}
-  gridField: {fileID: 437101231}
   spawnerInContainer: {fileID: 1917155560}
 --- !u!1 &1188302420
 GameObject:
