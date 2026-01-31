@@ -14,7 +14,7 @@ namespace Core.MainWidget
 
 		private protected override CorePrefabsKeys widgetKey => CorePrefabsKeys.MainWidget;
 
-		public override int priority => (int)CoreAsyncDataInitializePriority.MainWidget;
+		public override byte priority => (byte)CoreAsyncDataInitializePriority.MainWidget;
 		
 		[Inject]
 		public CoreWidgetAsyncDataInitializer(

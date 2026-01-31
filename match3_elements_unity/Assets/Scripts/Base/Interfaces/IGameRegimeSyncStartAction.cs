@@ -2,7 +2,7 @@ namespace Base
 {
 	public interface IGameRegimeSyncStartAction
 	{
-		int priority { get; }
+		byte priority { get; }
 		void Perform();
 	}
 }

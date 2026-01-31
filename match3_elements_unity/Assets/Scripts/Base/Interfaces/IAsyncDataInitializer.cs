@@ -4,7 +4,7 @@ namespace Base
 {
 	public interface IAsyncDataInitializer
 	{
-		int priority { get; }
+		byte priority { get; }
 		IEnumerator Initialize();
 	}
 }

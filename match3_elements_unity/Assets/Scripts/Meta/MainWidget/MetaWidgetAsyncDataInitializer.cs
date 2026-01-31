@@ -15,7 +15,7 @@ namespace Meta.MainWidget
 
 		private protected override MetaPrefabsKeys widgetKey => MetaPrefabsKeys.MainWidget;
 
-		public override int priority => (int)MetaAsyncDataInitializePriority.MainWidget;
+		public override byte priority => (byte)MetaAsyncDataInitializePriority.MainWidget;
 		
 		[Inject]
 		public MetaWidgetAsyncDataInitializer(

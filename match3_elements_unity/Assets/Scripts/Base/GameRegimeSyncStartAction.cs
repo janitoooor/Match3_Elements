@@ -4,7 +4,7 @@ namespace Base
 {
 	public abstract class GameRegimeSyncStartAction : IGameRegimeSyncStartAction
 	{
-		public abstract int priority { get; }
+		public abstract byte priority { get; }
 		
 		[Inject]
 		public void RegisterGameRegimeSyncStartAction(IGameRegimeSyncStartActionChainFiller chainFiller)

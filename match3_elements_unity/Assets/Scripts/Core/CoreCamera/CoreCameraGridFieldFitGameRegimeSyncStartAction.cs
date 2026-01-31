@@ -10,7 +10,7 @@ namespace Core.CoreCamera
 	{
 		private readonly IGridField gridField;
 		private readonly Camera camera;
-		public override int priority => (int)CoreGameRegimeSyncStartActionPriority.CameraGridFieldFit;
+		public override byte priority => (byte)CoreGameRegimeSyncStartActionPriority.CameraGridFieldFit;
 
 		[Inject]
 		public CoreCameraGridFieldFitGameRegimeSyncStartAction(IGridField gridField, Camera camera)

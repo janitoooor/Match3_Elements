@@ -30,7 +30,7 @@ namespace Core.Input
 
         private float swipeDuration => Time.time - touchStartTime;
         
-        public override int priority => (int)CoreGameRegimeSyncStartActionPriority.SwipeInputInitialize;
+        public override byte priority => (byte)CoreGameRegimeSyncStartActionPriority.SwipeInputInitialize;
 
         public override void Perform()
         {

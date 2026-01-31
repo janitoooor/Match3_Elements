@@ -10,7 +10,7 @@ namespace Core.Level
 		private readonly ICurrentLevelDataProvider currentLevelDataProvider;
 		private readonly ILevelConstructor levelConstructor;
 
-		public override int priority => (int)CoreAsyncDataInitializePriority.LevelInitialization;
+		public override byte priority => (byte)CoreAsyncDataInitializePriority.LevelInitialization;
 		
 		[Inject]
 		public LevelAsyncDataInitializer(

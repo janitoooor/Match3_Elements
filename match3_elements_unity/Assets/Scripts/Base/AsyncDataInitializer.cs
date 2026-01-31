@@ -5,7 +5,7 @@ namespace Base
 {
 	public abstract class AsyncDataInitializer : IAsyncDataInitializer
 	{
-		public abstract int priority { get; }
+		public abstract byte priority { get; }
 		
 		[Inject]
 		public void RegisterAsyncLoadedData(IAsyncDataInitializerChainFiller dataInitializerChainFiller)

@@ -6,7 +6,7 @@ namespace Core.MainWidget
 {
 	public sealed class CoreMainWidgetGameRegimeSyncStartAction : WidgetGameRegimeSyncStartAction<ICoreWidgetProvider>
 	{
-		public override int priority => (int)CoreGameRegimeSyncStartActionPriority.MainWidget;
+		public override byte priority => (byte)CoreGameRegimeSyncStartActionPriority.MainWidget;
 
 		[Inject]
 		public CoreMainWidgetGameRegimeSyncStartAction(ICoreWidgetProvider widgetProvider) : base(widgetProvider) {}
