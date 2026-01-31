@@ -16,7 +16,7 @@ MonoBehaviour:
   - <blockSkin>k__BackingField: 0
     animationsData:
     - <animationType>k__BackingField: 0
-      <animationFrameRate>k__BackingField: 6
+      <animationFrameRate>k__BackingField: 8
       <isLoopAnimation>k__BackingField: 1
       animationSpritesInternal:
       - {fileID: 21300000, guid: b3c47ccb76d0d49869e17d25c4666706, type: 3}
@@ -42,7 +42,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 52f8a7225b38646b3b2ceea494085599, type: 3}
       - {fileID: 21300000, guid: 1fc00022313874778b267c6b5f958012, type: 3}
     - <animationType>k__BackingField: 1
-      <animationFrameRate>k__BackingField: 8
+      <animationFrameRate>k__BackingField: 6
       <isLoopAnimation>k__BackingField: 0
       animationSpritesInternal:
       - {fileID: 21300000, guid: 09b17402b0d1c4071ad11055a963c83d, type: 3}
@@ -65,7 +65,7 @@ MonoBehaviour:
   - <blockSkin>k__BackingField: 1
     animationsData:
     - <animationType>k__BackingField: 0
-      <animationFrameRate>k__BackingField: 6
+      <animationFrameRate>k__BackingField: 8
       <isLoopAnimation>k__BackingField: 1
       animationSpritesInternal:
       - {fileID: 21300000, guid: 6c580f68a6c69478cb8c13226b7c088e, type: 3}
@@ -86,7 +86,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 246802b423faf44558720c62d7d2d83f, type: 3}
       - {fileID: 21300000, guid: 3070b3d924004447295a598dab760816, type: 3}
     - <animationType>k__BackingField: 1
-      <animationFrameRate>k__BackingField: 8
+      <animationFrameRate>k__BackingField: 6
       <isLoopAnimation>k__BackingField: 0
       animationSpritesInternal:
       - {fileID: 21300000, guid: 6e1a9a90a774b4861808e1426e326699, type: 3}
