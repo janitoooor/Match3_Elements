@@ -10,20 +10,20 @@ namespace Core.BlocksMovements
 		
 		private sealed class BlockMovement : IBlockMovement
 		{
-			private IBlockEntity block;
-			private MovedBlockDelegate callback;
+			private MovedBlockDelegate finishedCallback;
+			public IBlockEntity blockEntity { get; private set; }
 			public Vector3 startPosition { get; private set; }
 			public Vector3 targetPosition { get; private set; }
 			public float elapsedTime { get; private set; }
-			public float moveDuration => block.moveDuration;
+			public float moveDuration => blockEntity.moveDuration;
 			
-			public void Init(IBlockEntity blockEntity, Vector3 targetPos, MovedBlockDelegate finishedCallback)
+			public void Init(IBlockEntity block, Vector3 targetPos, MovedBlockDelegate callback)
 			{
-				block = blockEntity;
+				this.blockEntity = block;
 				targetPosition = targetPos;
-				callback = finishedCallback;
+				this.finishedCallback = callback;
 
-				startPosition = blockEntity.GetLocalPosition();
+				startPosition = block.GetLocalPosition();
 				elapsedTime = 0f;
 			}
 			
@@ -31,10 +31,10 @@ namespace Core.BlocksMovements
 				=> elapsedTime += increaseDelta;
 
 			public void SetBlockLocalPosition(Vector3 blockLocalPos)
-				=> block.SetLocalPosition(blockLocalPos);
+				=> blockEntity.SetLocalPosition(blockLocalPos);
 			
 			public void FinishMovement()
-				=> callback?.Invoke(block);
+				=> finishedCallback?.Invoke(blockEntity);
 		}
 	}
 }

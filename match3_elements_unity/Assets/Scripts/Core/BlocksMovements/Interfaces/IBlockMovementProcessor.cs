@@ -6,5 +6,6 @@ namespace Core.BlocksMovements
 	public interface IBlockMovementProcessor
 	{
 		void MoveBlockTo(IBlockEntity block, Vector3 targetPosition, MovedBlockDelegate finishedCallback);
+		bool IsBlockInMovement(IBlockEntity blockEntity);
 	}
 }

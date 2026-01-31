@@ -59,6 +59,12 @@ namespace Core.Grid
 				return;
 			}
 			
+			if (blockMovementProcessor.IsBlockInMovement(blockEntity))
+			{
+				Debug.Log($"====> block at loc pos {blockEntity.GetLocalPosition()} is in movement!");
+				return;
+			}
+			
 			var neighbourBlock = gridCells[cellToSwap];
 			var sourceCell = blocksOnGrid[blockEntity];
 			

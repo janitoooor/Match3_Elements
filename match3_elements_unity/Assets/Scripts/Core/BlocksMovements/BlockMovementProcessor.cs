@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Core.Blocks;
 using UnityEngine;
 using Zenject;
@@ -21,7 +22,10 @@ namespace Core.BlocksMovements
 			movement.Init(block, targetPosition, finishedCallback);
 			activeMovements.Add(movement);
 		}
-		
+
+		public bool IsBlockInMovement(IBlockEntity blockEntity)
+			=> activeMovements.Any(movement => movement.blockEntity == blockEntity);
+
 		public void Tick()
 		{
 			for (var i = activeMovements.Count - 1; i >= 0; i--)
