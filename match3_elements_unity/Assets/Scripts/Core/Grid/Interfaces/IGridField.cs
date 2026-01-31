@@ -7,6 +7,7 @@ namespace Core.Grid
 	
 	public interface IGridField
 	{
+		Vector2Int gridSize { get; }
 		void UpdateGridSize(int x, int y);
 		void PlaceBlockAtCell(IBlockEntity blockEntity, Vector2Int cell);
 		void MoveBlockToCell(IBlockEntity blockEntity, Vector2Int cell, MovedBlockDelegate callback);

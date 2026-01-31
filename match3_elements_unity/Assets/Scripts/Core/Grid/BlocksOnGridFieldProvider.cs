@@ -20,6 +20,28 @@ namespace Core.Grid
 		public BlocksOnGridFieldProvider(IGridField gridField)
 			=> this.gridField = gridField;
 
+		public void AddBlockOnGrid(IBlockEntity blockEntity, Vector2Int cellPos)
+		{
+			gridField.PlaceBlockAtCell(blockEntity, cellPos);
+			
+			blocksOnGrid.Add(blockEntity, cellPos);
+			gridCells[cellPos] = blockEntity;
+		}
+
+		public void ChangeGridSize(int x, int y)
+		{
+			gridField.UpdateGridSize(x, y);
+
+			gridCells = new Dictionary<Vector2Int, IBlockEntity>(x * y);
+			
+			for (var i = 0; i < x; i++)
+			for (var j = 0; j < y; j++)
+				gridCells.Add(new Vector2Int(i, j), null);
+		}
+		
+		public Vector2Int GetBlockCellToSwipe(IBlockEntity blockEntity, SwipeDirectionData swipeDirectionData)
+			=> GetBlockCellPos(blockEntity) + swipeDirectionData.directionVector;
+		
 		public void SwipeBlockTo(IBlockEntity blockEntity, Vector2Int cellToSwap, SwipeDirectionData swipeDirectionData)
 		{
 			if (busyCells.Contains(cellToSwap))
@@ -53,16 +75,6 @@ namespace Core.Grid
 			SafeMoveBlockToCell(neighbourBlockEntity, sourceCell);
 		}
 		
-		private void SingleMoveBlockToCell(IBlockEntity blockEntity, Vector2Int sourceCell, Vector2Int cellToSwap)
-		{
-			gridCells[sourceCell] = null;
-			
-			gridCells[cellToSwap] = blockEntity;
-			blocksOnGrid[blockEntity] = cellToSwap;
-			
-			SafeMoveBlockToCell(blockEntity, cellToSwap, TryFallBlockAfterSingleMove(cellToSwap));
-		}
-		
 		private void SafeMoveBlockToCell(IBlockEntity blockEntity, Vector2Int cellToSwap, 
 			MovedBlockDelegate callback = null)
 		{
@@ -74,37 +86,46 @@ namespace Core.Grid
 			});
 		}
 
-		private MovedBlockDelegate TryFallBlockAfterSingleMove(Vector2Int finishCell)
+		private MovedBlockDelegate TryFallBlockAfterSingleMove(Vector2Int sourceCell, Vector2Int finishCell)
 			=> movedBlockEntity =>
 			{
 				var downNeighbourCellY = finishCell.y - 1;
 
-				var cellToFall = new Vector2Int(finishCell.x, downNeighbourCellY);
+				if (downNeighbourCellY >= 0)
+					TryFallBlockAfterMovedSide(finishCell, downNeighbourCellY, movedBlockEntity);
 				
-				if (downNeighbourCellY >= 0 && gridCells[cellToFall] == null)
-					SingleMoveBlockToCell(movedBlockEntity, finishCell, cellToFall);
+				var upNeighbourCellY = sourceCell.y + 1;
+
+				if (upNeighbourCellY < gridField.gridSize.y)
+					TryFallUpNeighbourAfterBlockMovedSide(sourceCell, upNeighbourCellY);
 			};
 
-		public Vector2Int GetBlockCellToSwipe(IBlockEntity blockEntity, SwipeDirectionData swipeDirectionData)
-			=> GetBlockCellPos(blockEntity) + swipeDirectionData.directionVector;
-
-		public void AddBlockOnGrid(IBlockEntity blockEntity, Vector2Int cellPos)
+		private void TryFallBlockAfterMovedSide(Vector2Int finishCell, int downNeighbourCellY, 
+			IBlockEntity movedBlockEntity)
 		{
-			gridField.PlaceBlockAtCell(blockEntity, cellPos);
-			
-			blocksOnGrid.Add(blockEntity, cellPos);
-			gridCells[cellPos] = blockEntity;
+			var cellToFall = new Vector2Int(finishCell.x, downNeighbourCellY);
+
+			if (gridCells[cellToFall] == null)
+				SingleMoveBlockToCell(movedBlockEntity, finishCell, cellToFall);
 		}
 
-		public void ChangeGridSize(int x, int y)
+		private void TryFallUpNeighbourAfterBlockMovedSide(Vector2Int sourceCell, int upNeighbourCellY)
 		{
-			gridField.UpdateGridSize(x, y);
+			var upNeighbourCell = new Vector2Int(sourceCell.x, upNeighbourCellY);
+			var upNeighbourBlock = gridCells[upNeighbourCell];
+				
+			if (upNeighbourBlock != null && gridCells[sourceCell] == null)
+				SingleMoveBlockToCell(upNeighbourBlock, upNeighbourCell, sourceCell);
+		}
 
-			gridCells = new Dictionary<Vector2Int, IBlockEntity>(x * y);
+		private void SingleMoveBlockToCell(IBlockEntity blockEntity, Vector2Int sourceCell, Vector2Int cellToSwap)
+		{
+			gridCells[sourceCell] = null;
 			
-			for (var i = 0; i < x; i++)
-				for (var j = 0; j < y; j++)
-					gridCells.Add(new Vector2Int(i, j), null);
+			gridCells[cellToSwap] = blockEntity;
+			blocksOnGrid[blockEntity] = cellToSwap;
+			
+			SafeMoveBlockToCell(blockEntity, cellToSwap, TryFallBlockAfterSingleMove(sourceCell, cellToSwap));
 		}
 
 		private Vector2Int GetBlockCellPos(IBlockEntity blockEntity)
