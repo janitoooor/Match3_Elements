@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ab0ad176cbc430fb7477a157a0a74c0, type: 3}
-  m_Name: AnimationsContainer
+  m_Name: BlocsContainer
   m_EditorClassIdentifier: Assembly-CSharp::Core.Animation.Configs.AnimationsContainer
-  animations:
-  - <animationSkin>k__BackingField: 0
+  blockSkinsData:
+  - <blockSkin>k__BackingField: 0
     animationsData:
     - <animationType>k__BackingField: 0
       <animationFrameRate>k__BackingField: 6
@@ -42,7 +42,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 52f8a7225b38646b3b2ceea494085599, type: 3}
       - {fileID: 21300000, guid: 1fc00022313874778b267c6b5f958012, type: 3}
     - <animationType>k__BackingField: 1
-      <animationFrameRate>k__BackingField: 4
+      <animationFrameRate>k__BackingField: 8
       <isLoopAnimation>k__BackingField: 0
       animationSpritesInternal:
       - {fileID: 21300000, guid: 09b17402b0d1c4071ad11055a963c83d, type: 3}
@@ -62,7 +62,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: c917af801694b45a3a65d52112a6e340, type: 3}
       - {fileID: 21300000, guid: fe465e1dbdb3345d29705a7adecda736, type: 3}
       - {fileID: 21300000, guid: a8d8bdbf88bbd4b9db1683b84a51f0cc, type: 3}
-  - <animationSkin>k__BackingField: 1
+  - <blockSkin>k__BackingField: 1
     animationsData:
     - <animationType>k__BackingField: 0
       <animationFrameRate>k__BackingField: 6
@@ -86,7 +86,7 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 246802b423faf44558720c62d7d2d83f, type: 3}
       - {fileID: 21300000, guid: 3070b3d924004447295a598dab760816, type: 3}
     - <animationType>k__BackingField: 1
-      <animationFrameRate>k__BackingField: 4
+      <animationFrameRate>k__BackingField: 8
       <isLoopAnimation>k__BackingField: 0
       animationSpritesInternal:
       - {fileID: 21300000, guid: 6e1a9a90a774b4861808e1426e326699, type: 3}

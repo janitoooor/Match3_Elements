@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.Level.LevelsInstaller
   levelsContainer: {fileID: 11400000, guid: b0f9a877e014b430aa382a08f653c227, type: 2}
-  animationsContainer: {fileID: 11400000, guid: 728c9de15ee0645d79b1d19ad524dd19, type: 2}
+  blocsContainer: {fileID: 11400000, guid: 728c9de15ee0645d79b1d19ad524dd19, type: 2}
   gridField: {fileID: 437101231}
 --- !u!1 &309641359
 GameObject:

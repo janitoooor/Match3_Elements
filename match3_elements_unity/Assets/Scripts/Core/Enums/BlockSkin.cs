@@ -1,6 +1,6 @@
 namespace Core.Enums
 {
-	public enum AnimationSkin : byte
+	public enum BlockSkin : byte
 	{
 		Fire,
 		Water

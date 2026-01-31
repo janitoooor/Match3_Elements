@@ -5,7 +5,7 @@ namespace Core.Level.Configs
 {
 	public interface ILevelBlockData
 	{
-		AnimationSkin skin { get; }
+		BlockSkin skin { get; }
 		Vector2Int cellPos { get; }
 	}
 }

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Base;
+using Core.Animation;
 using Core.Enums;
 using UnityEngine;
 
-namespace Core.Animation.Configs
+namespace Core.Blocks
 {
 	[Serializable]
 	public sealed class AnimationData : IAnimationData
@@ -26,10 +26,10 @@ namespace Core.Animation.Configs
 	}
 
 	[Serializable]
-	public sealed class AnimationSkinData : IAnimationSkinData
+	public sealed class BlockSkinData : IBlockSkinData
 	{
 		[field: SerializeField]
-		public AnimationSkin animationSkin { get; private set; }
+		public BlockSkin blockSkin { get; private set; }
     
 		[SerializeField, ArrayElementTitle("animationType")]
 		private AnimationData[] animationsData;
@@ -45,19 +45,19 @@ namespace Core.Animation.Configs
 			);
 	}
 
-	[CreateAssetMenu(menuName = "Match3/Core/Create Animations Container", order = 0, fileName = "AnimationsContainer")]
-	public sealed class AnimationsContainer : ScriptableObject, IAnimationsContainer
+	[CreateAssetMenu(menuName = "Match3/Core/Create Blocs Container", order = 0, fileName = "BlocsContainer")]
+	public sealed class BlocsContainer : ScriptableObject, IBlocsContainer
 	{
-		[SerializeField, ArrayElementTitle("animationSkin")]
-		private AnimationSkinData[] animations;
+		[SerializeField, ArrayElementTitle("blockSkin")]
+		private BlockSkinData[] blockSkinsData;
 
-		private readonly Dictionary<AnimationSkin, IAnimationSkinData> cache = new();
+		private readonly Dictionary<BlockSkin, IBlockSkinData> cache = new();
     
-		public IAnimationSkinData GetAnimationSkinData(AnimationSkin animationSkin)
+		public IBlockSkinData GetBlockSkinData(BlockSkin blockSkin)
 			=> cache.GetOrAddFromArray(
-				animationSkin,
-				animations,
-				a => a.animationSkin,
+				blockSkin,
+				blockSkinsData,
+				a => a.blockSkin,
 				a => a);
 	}
 }

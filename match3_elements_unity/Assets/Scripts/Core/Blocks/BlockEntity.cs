@@ -1,4 +1,4 @@
-using Core.Animation.Configs;
+using Core.Animation;
 using Core.Enums;
 using UnityEngine;
 
@@ -16,10 +16,10 @@ namespace Core.Blocks
 		[SerializeField]
 		private AnimationPlayer animationPlayer;
 		
-		private IAnimationSkinData animationSkinData;
+		private IBlockSkinData blockSkinData;
 		
-		public void Setup(IAnimationSkinData skinData)
-			=> animationSkinData = skinData;
+		public void Setup(IBlockSkinData skinData)
+			=> blockSkinData = skinData;
 		
 		public void PlaceAt(Transform transformParent, Vector3 localPosition)
 		{
@@ -31,7 +31,9 @@ namespace Core.Blocks
 		}
 
 		public void KillBlock()
-			=> animationPlayer.PlayAnimation(animationSkinData.GetAnimationData(AnimationType.Dead), DeadAnimationCallback());
+			=> animationPlayer.PlayAnimation(
+				blockSkinData.GetAnimationData(AnimationType.Dead), 
+				DeadAnimationCallback());
 
 		public Vector3 GetLocalPosition()
 			=> transform.localPosition;

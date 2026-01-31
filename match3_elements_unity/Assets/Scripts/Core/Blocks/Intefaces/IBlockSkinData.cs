@@ -1,8 +1,9 @@
+using Core.Animation;
 using Core.Enums;
 
-namespace Core.Animation.Configs
+namespace Core.Blocks
 {
-	public interface IAnimationSkinData
+	public interface IBlockSkinData
 	{
 		IAnimationData GetAnimationData(AnimationType animationType);
 	}

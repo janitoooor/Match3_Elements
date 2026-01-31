@@ -1,14 +1,15 @@
 using System.Collections;
+using Core.Blocks;
 using UnityEngine;
 
-namespace Core.Animation.Configs
+namespace Core.Animation
 {
 	public delegate void AnimationFinishedDelegate();
 	
 	public sealed class AnimationPlayer : MonoBehaviour
 	{
 		[SerializeField]
-		private AnimationsContainer animationsContainer;
+		private BlocsContainer blocsContainer;
 		
 		[SerializeField]
 		private SpriteRenderer animationSpriteRenderer;

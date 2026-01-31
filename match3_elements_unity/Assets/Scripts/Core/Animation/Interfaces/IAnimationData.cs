@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Core.Animation.Configs
+namespace Core.Animation
 {
 	public interface IAnimationData
 	{

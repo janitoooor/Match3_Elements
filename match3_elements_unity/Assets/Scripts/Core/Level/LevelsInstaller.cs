@@ -1,4 +1,3 @@
-using Core.Animation.Configs;
 using Core.Blocks;
 using Core.BlocksMovements;
 using Core.Grid;
@@ -14,7 +13,7 @@ namespace Core.Level
 		private LevelsContainer levelsContainer;
 		
 		[SerializeField]
-		private AnimationsContainer animationsContainer;
+		private BlocsContainer blocsContainer;
 		
 		[SerializeField]
 		private GridField gridField;

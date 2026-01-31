@@ -12,7 +12,7 @@ namespace Core.Level.Configs
 	public sealed class LevelBlockData : ILevelBlockData
 	{
 		[field: SerializeField]
-		public AnimationSkin skin { get; private set; }
+		public BlockSkin skin { get; private set; }
 
 		[field: SerializeField]
 		public Vector2Int cellPos { get; private set; }
