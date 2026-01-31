@@ -8,7 +8,7 @@ namespace Core.Level
 {
 	public sealed class LevelConstructor : ILevelConstructor
 	{
-		private const byte MAX_SPAWNED_PER_FRAME = 10;
+		private const byte MAX_INSTANTIATED_BLOCS_PER_FRAME = 10;
 		
 		private readonly IBlocksOnGridFieldProvider blocksOnGridFieldProvider;
 		private readonly IBlocksGenerator blocksGenerator;
@@ -24,20 +24,30 @@ namespace Core.Level
 		{
 			blocksOnGridFieldProvider.SetGridSize(levelData.gridSize.x, levelData.gridSize.y);
 
-			byte spawnedPerFrame = 0;
+			byte instantiatedBlocsPerFrame = 0;
 			
 			for (var i = 0; i < levelData.levelBlockData.Count; i++)
-			{
-				var blockData = levelData.levelBlockData[i];
-				blocksOnGridFieldProvider.AddBlockOnGrid(blocksGenerator.GenerateBlock(blockData.skin), blockData.cellPos);
-				spawnedPerFrame++;
-
-				if (spawnedPerFrame > MAX_SPAWNED_PER_FRAME)
-				{
-					spawnedPerFrame = 0;
+				if (GenerateBlockAndSkipFrameCheck(levelData, i, ref instantiatedBlocsPerFrame)) 
 					yield return null;
-				}
+		}
+
+		private bool GenerateBlockAndSkipFrameCheck(ILevelData levelData, int i, ref byte instantiatedBlocsPerFrame)
+		{
+			var blockData = levelData.levelBlockData[i];
+			var blockEntity = blocksGenerator.GenerateBlock(blockData.skin, out var isInstantiated);
+				
+			blocksOnGridFieldProvider.AddBlockOnGrid(blockEntity, blockData.cellPos);
+				
+			if (isInstantiated)
+				instantiatedBlocsPerFrame++;
+			
+			if (instantiatedBlocsPerFrame > MAX_INSTANTIATED_BLOCS_PER_FRAME)
+			{
+				instantiatedBlocsPerFrame = 0;
+				return true;
 			}
+			
+			return false;
 		}
 	}
 }

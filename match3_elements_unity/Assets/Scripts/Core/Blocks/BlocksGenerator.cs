@@ -15,7 +15,7 @@ namespace Core.Blocks
 		private readonly IBlocsContainer blocsContainer;
 
 		private readonly List<IBlockEntity> spawnedBlocks;
-		private readonly Queue<IBlockEntity> blocksPool = new();
+		private readonly Queue<IBlockEntity> blocksPool;
 		
 		[Inject]
 		public BlocksGenerator(
@@ -27,19 +27,30 @@ namespace Core.Blocks
 			this.corePrefabsContainer = corePrefabsContainer;
 			this.blocsContainer = blocsContainer;
 
-			spawnedBlocks = new(spawnerInContainer.GetContainerSpawnedEntities<BlockEntity>(SPAWN_CONTAINER_TYPE));
+			spawnedBlocks = new(GetContainerSpawnedBlocks(spawnerInContainer));
 			blocksPool = new (spawnedBlocks);
 		}
 
-		public IBlockEntity GenerateBlock(BlockSkin skin)
+		private static IReadOnlyList<IBlockEntity> GetContainerSpawnedBlocks(ISpawnerInContainer spawnerInContainer)
+			=> spawnerInContainer.GetContainerSpawnedEntities<IBlockEntity>(SPAWN_CONTAINER_TYPE);
+
+		public IBlockEntity GenerateBlock(BlockSkin skin, out bool isInstantiated)
 		{
-			var block = GetBlockEntity();
+			var block = GetBlockEntity(out isInstantiated);
 			block.Setup(blocsContainer.GetBlockSkinData(skin));
 			return block;
 		}
 
-		private IBlockEntity GetBlockEntity()
-			=> blocksPool.Count == 0 ? CreateNewBlockEntity() : blocksPool.Dequeue();
+		private IBlockEntity GetBlockEntity(out bool isInstantiated)
+		{
+			isInstantiated = false;
+
+			if (blocksPool.Count > 0)
+				blocksPool.Dequeue();
+
+			isInstantiated = true;
+			return CreateNewBlockEntity();
+		}
 
 		private IBlockEntity CreateNewBlockEntity()
 		{

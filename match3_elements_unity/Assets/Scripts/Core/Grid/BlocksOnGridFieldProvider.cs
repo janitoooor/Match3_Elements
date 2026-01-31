@@ -18,13 +18,15 @@ namespace Core.Grid
 
 		private readonly List<Vector2Int> busyCells = new();
 
+		public IReadOnlyDictionary<IBlockEntity, Vector2Int> blocksOnGridField => blocksOnGrid;
+		
 		[Inject]
 		public BlocksOnGridFieldProvider(IGridField gridField, IBlockMovementProcessor blockMovementProcessor)
 		{
 			this.gridField = gridField;
 			this.blockMovementProcessor = blockMovementProcessor;
 		}
-
+		
 		public void AddBlockOnGrid(IBlockEntity blockEntity, Vector2Int cell)
 		{
 			blockEntity.PlaceAt(
