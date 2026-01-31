@@ -10,14 +10,19 @@ namespace Core.Blocks
 	{
 		public event BlockEntityDeadDelegate OnBlockEntityDead;
 		
-		[field: SerializeField] 
-		public float moveDuration { get; private set; } = 0.5f;
-		
 		[SerializeField]
 		private AnimationPlayer animationPlayer;
 		
+		[field: SerializeField] 
+		public float moveDuration { get; private set; } = 0.5f;
+		
 		private IBlockSkinData blockSkinData;
 		
+		public int rendererSortingOrder => animationPlayer.rendererSortingOrder;
+		
+		public void SetRendererSortingOder(int sortingLayer)
+			=> animationPlayer.SetRendererSortingOder(sortingLayer);
+
 		public void Setup(IBlockSkinData skinData)
 			=> blockSkinData = skinData;
 		

@@ -15,7 +15,12 @@ namespace Core.Animation
 		private SpriteRenderer animationSpriteRenderer;
 		
 		private Coroutine animationCoroutine;
-		
+
+		public int rendererSortingOrder => animationSpriteRenderer.sortingOrder;
+
+		public void SetRendererSortingOder(int sortingLayer)
+			=> animationSpriteRenderer.sortingOrder = sortingLayer;
+
 		public void PlayAnimation(IAnimationData animationData, AnimationFinishedDelegate finishedCallback = null)
 		{
 			if (animationCoroutine != null)

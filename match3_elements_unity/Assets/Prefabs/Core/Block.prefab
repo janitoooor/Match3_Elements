@@ -275,5 +275,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e89a8fba39e46bb9e64aea3b0379001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.Animation.Configs.AnimationPlayer
-  animationsContainer: {fileID: 11400000, guid: 728c9de15ee0645d79b1d19ad524dd19, type: 2}
+  blocsContainer: {fileID: 0}
   animationSpriteRenderer: {fileID: 1631434244114959794}

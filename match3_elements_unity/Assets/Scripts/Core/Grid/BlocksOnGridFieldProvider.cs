@@ -33,10 +33,12 @@ namespace Core.Grid
 				gridField.GetTransformParentForBlocksInCell(), 
 				CalculateBlockLocalPositionOnGridCell(cell));
 			
+			SetBlockRendererSortingOderForCell(blockEntity, cell);
+			
 			blocksOnGrid.Add(blockEntity, cell);
 			gridCells[cell] = blockEntity;
 		}
-
+		
 		public void SetGridSize(int x, int y)
 		{
 			gridField.UpdateGridSize(x, y);
@@ -85,35 +87,43 @@ namespace Core.Grid
 			
 			blocksOnGrid[blockEntity] = sourceNeighbourCell;
 			blocksOnGrid[neighbourBlockEntity] = sourceCell;
+
+			var blockSortingOrder = blockEntity.rendererSortingOrder;
+			var neighbourBlockSortingOrder = neighbourBlockEntity.rendererSortingOrder;
+			
+			SetSourceBlockRendererSortingOderBeforeMove(blockEntity, neighbourBlockSortingOrder);
+			neighbourBlockEntity.SetRendererSortingOder(Mathf.Min(blockSortingOrder, neighbourBlockSortingOrder) + 1);
 			
 			SafeMoveBlockToCell(blockEntity, sourceNeighbourCell);
 			SafeMoveBlockToCell(neighbourBlockEntity, sourceCell);
 		}
 		
-		private void SafeMoveBlockToCell(IBlockEntity blockEntity, Vector2Int cellToSwap, 
+		private void SafeMoveBlockToCell(IBlockEntity blockEntity, Vector2Int targetCell, 
 			MovedBlockDelegate callback = null)
 		{
-			busyCells.Add(cellToSwap);
+			busyCells.Add(targetCell);
+			
 			blockMovementProcessor.MoveBlockTo(
 				blockEntity, 
-				CalculateBlockLocalPositionOnGridCell(cellToSwap), 
-				MovedBlockFinishedCallback(cellToSwap, callback));
+				CalculateBlockLocalPositionOnGridCell(targetCell), 
+				MovedBlockFinishedCallback(targetCell, callback));
 		}
 
-		private MovedBlockDelegate MovedBlockFinishedCallback(Vector2Int cellToSwap, MovedBlockDelegate callback)
+		private MovedBlockDelegate MovedBlockFinishedCallback(Vector2Int targetCell, MovedBlockDelegate callback)
 			=> movedBlockEntity =>
 			{
+				SetBlockRendererSortingOderForCell(movedBlockEntity, targetCell);
 				callback?.Invoke(movedBlockEntity);
-				busyCells.Remove(cellToSwap);
+				busyCells.Remove(targetCell);
 			};
 
-		private MovedBlockDelegate TryFallBlockAfterSingleMove(Vector2Int sourceCell, Vector2Int finishCell)
+		private MovedBlockDelegate TryFallBlockAfterSingleMove(Vector2Int sourceCell, Vector2Int targetCell)
 			=> movedBlockEntity =>
 			{
-				var downNeighbourCellY = finishCell.y - 1;
+				var downNeighbourCellY = targetCell.y - 1;
 
 				if (downNeighbourCellY >= 0)
-					TryFallBlockAfterMovedSide(finishCell, downNeighbourCellY, movedBlockEntity);
+					TryFallBlockAfterMovedSide(targetCell, downNeighbourCellY, movedBlockEntity);
 				
 				var upNeighbourCellY = sourceCell.y + 1;
 
@@ -121,13 +131,13 @@ namespace Core.Grid
 					TryFallUpNeighbourAfterBlockMovedSide(sourceCell, upNeighbourCellY);
 			};
 
-		private void TryFallBlockAfterMovedSide(Vector2Int finishCell, int downNeighbourCellY, 
+		private void TryFallBlockAfterMovedSide(Vector2Int targetCell, int downNeighbourCellY, 
 			IBlockEntity movedBlockEntity)
 		{
-			var cellToFall = new Vector2Int(finishCell.x, downNeighbourCellY);
+			var cellToFall = new Vector2Int(targetCell.x, downNeighbourCellY);
 
 			if (gridCells[cellToFall] == null)
-				SingleMoveBlockToCell(movedBlockEntity, finishCell, cellToFall);
+				SingleMoveBlockToCell(movedBlockEntity, targetCell, cellToFall);
 		}
 
 		private void TryFallUpNeighbourAfterBlockMovedSide(Vector2Int sourceCell, int upNeighbourCellY)
@@ -139,30 +149,35 @@ namespace Core.Grid
 				SingleMoveBlockToCell(upNeighbourBlock, upNeighbourCell, sourceCell);
 		}
 
-		private void SingleMoveBlockToCell(IBlockEntity blockEntity, Vector2Int sourceCell, Vector2Int cellToSwap)
+		private void SingleMoveBlockToCell(IBlockEntity blockEntity, Vector2Int sourceCell, Vector2Int targetCell)
 		{
 			gridCells[sourceCell] = null;
 			
-			gridCells[cellToSwap] = blockEntity;
-			blocksOnGrid[blockEntity] = cellToSwap;
+			gridCells[targetCell] = blockEntity;
+			blocksOnGrid[blockEntity] = targetCell;
 			
-			SafeMoveBlockToCell(blockEntity, cellToSwap, TryFallBlockAfterSingleMove(sourceCell, cellToSwap));
+			var targetCellSortingOrder = CalculateBlockRendererSortingOrderForCell(targetCell.x, targetCell.y);
+			SetSourceBlockRendererSortingOderBeforeMove(blockEntity, targetCellSortingOrder);
+			
+			SafeMoveBlockToCell(blockEntity, targetCell, TryFallBlockAfterSingleMove(sourceCell, targetCell));
 		}
+
+		private static void SetSourceBlockRendererSortingOderBeforeMove(IBlockEntity blockEntity, int finishSortingOrder)
+			=> blockEntity.SetRendererSortingOder(Mathf.Max(blockEntity.rendererSortingOrder, finishSortingOrder) - 1);
+
+		private static void SetBlockRendererSortingOderForCell(IBlockEntity blockEntity, Vector2Int cell)
+			=> blockEntity.SetRendererSortingOder(CalculateBlockRendererSortingOrderForCell(cell.x, cell.y));
 
 		private Vector2Int GetBlockCellPos(IBlockEntity blockEntity)
 			=> blocksOnGrid.GetValueOrDefault(blockEntity);
 		
 		private Vector3 CalculateBlockLocalPositionOnGridCell(Vector2Int cell)
-			=> new(
-				CalculateCellSizeOffset(cell.x), 
-				CalculateCellSizeOffset(cell.y),
-				CalculateZOffset(cell.x, cell.y));
+			=> new(CalculateCellSizeOffset(cell.x), CalculateCellSizeOffset(cell.y), 0f);
 
-		private static float CalculateZOffset(int x, int y)
+		private static int CalculateBlockRendererSortingOrderForCell(int x, int y)
 		{
-			const float zOffsetCellY = 0.001f;
-			const float zOffsetCellX = 0.00005f;
-			return -(y * zOffsetCellY + x * zOffsetCellX);
+			const int cellSortingOrder = 10; 
+			return cellSortingOrder * (x + y);
 		}
 
 		private float CalculateCellSizeOffset(int y)
