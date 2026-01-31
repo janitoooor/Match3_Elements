@@ -25,7 +25,9 @@ namespace Core.MainWidget
 			=> this.coreMainWidgetModel = coreMainWidgetModel;
 		
 		private protected override void InitializeRegisteredWidget()
-		{
-		}
+			=> widget.OnCoreMainWidgetButtonClicked += OnCoreMainWidgetButtonClicked;
+
+		private void OnCoreMainWidgetButtonClicked(CoreMainWidgetButtonType buttonType)
+			=> coreMainWidgetModel.HandleButtonClick(buttonType);
 	}
 }

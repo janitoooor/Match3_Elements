@@ -42,5 +42,8 @@ namespace Core.Level.Configs
 		
 		public ILevelData GetLevelData(int levelIndex)
 			=> levelsData.FirstOrDefault(l => l.levelIndex == levelIndex);
+
+		public int GetLevelsCount()
+			=> levelsData.Length;
 	}
 }
