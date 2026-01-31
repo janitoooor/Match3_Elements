@@ -25,7 +25,10 @@ namespace Core.Blocks
 		{
 			transform.SetParent(transformParent);
 			SetLocalPosition(localPosition);
-			
+		}
+
+		public void ShowBlock()
+		{
 			gameObject.SetActive(true);
 			animationPlayer.PlayAnimation(blockSkinData.GetAnimationData(AnimationType.Idle));
 		}

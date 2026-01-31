@@ -42,6 +42,8 @@ namespace Core.Level
 
 		private void BindLevel()
 		{
+			Container.Bind<NewLevelBlocksOnGridShowGameRegimeSyncStartAction>().AsSingle().NonLazy();
+			
 			Container.Bind<ICurrentLevelDataProvider>().To<CurrentLevelDataProvider>().AsSingle();
 			
 			Container.Bind<ILevelsContainer>().FromInstance(levelsContainer).AsSingle();
