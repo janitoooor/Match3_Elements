@@ -6,7 +6,7 @@ namespace Core.Level.Configs
 {
 	public interface ILevelData
 	{
-		int levelIndex { get; }
+		byte minDestroyBlocksLineLength { get; }
 		Vector2Int gridSize { get; }
 		IReadOnlyList<LevelBlockData> levelBlockData { get; }
 	}

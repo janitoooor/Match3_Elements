@@ -22,7 +22,7 @@ namespace Core.Level
 
 		public IEnumerator ConstructLevel(ILevelData levelData)
 		{
-			blocksOnGridFieldProvider.ChangeGridSize(levelData.gridSize.x, levelData.gridSize.y);
+			blocksOnGridFieldProvider.SetGridSize(levelData.gridSize.x, levelData.gridSize.y);
 
 			byte spawnedPerFrame = 0;
 			

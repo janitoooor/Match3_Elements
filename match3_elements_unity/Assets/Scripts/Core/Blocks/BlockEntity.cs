@@ -1,7 +1,5 @@
-using System.Collections;
 using Core.Animation.Configs;
 using Core.Enums;
-using Core.Grid;
 using UnityEngine;
 
 namespace Core.Blocks
@@ -12,8 +10,8 @@ namespace Core.Blocks
 	{
 		public event BlockEntityDeadDelegate OnBlockEntityDead;
 		
-		[SerializeField] 
-		private float moveDuration = 0.5f;
+		[field: SerializeField] 
+		public float moveDuration { get; private set; } = 0.5f;
 		
 		[SerializeField]
 		private AnimationPlayer animationPlayer;
@@ -26,17 +24,20 @@ namespace Core.Blocks
 		public void PlaceAt(Transform transformParent, Vector3 localPosition)
 		{
 			transform.SetParent(transformParent);
-			transform.localPosition = localPosition;
+			SetLocalPosition(localPosition);
 			
 			gameObject.SetActive(true);
-			animationPlayer.PlayAnimation(animationSkinData.GetAnimationData(AnimationType.Idle));
+			animationPlayer.PlayAnimation(blockSkinData.GetAnimationData(AnimationType.Idle));
 		}
-
-		public void MoveTo(Vector3 localPosition, MovedBlockDelegate callback)
-			=> StartCoroutine(MoveToPosition(localPosition, callback));
 
 		public void KillBlock()
 			=> animationPlayer.PlayAnimation(animationSkinData.GetAnimationData(AnimationType.Dead), DeadAnimationCallback());
+
+		public Vector3 GetLocalPosition()
+			=> transform.localPosition;
+
+		public void SetLocalPosition(Vector3 localPosition)
+			=> transform.localPosition = localPosition;
 
 		private AnimationFinishedDelegate DeadAnimationCallback()
 			=> () =>
@@ -44,22 +45,5 @@ namespace Core.Blocks
 				gameObject.SetActive(false);
 				OnBlockEntityDead?.Invoke(this);
 			};
-
-		private IEnumerator MoveToPosition(Vector3 targetPosition, MovedBlockDelegate callback)
-		{
-			var startPosition = transform.localPosition;
-			var elapsedTime = 0f;
-
-			while (elapsedTime < moveDuration)
-			{
-				transform.localPosition = Vector3.Lerp(startPosition, targetPosition, Mathf.Clamp01(elapsedTime / moveDuration));
-				elapsedTime += Time.deltaTime;
-				yield return null;
-			}
-        
-			transform.localPosition = targetPosition;
-        
-			callback?.Invoke(this);
-		}
 	}
 }

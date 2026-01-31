@@ -22,8 +22,11 @@ namespace Core.Level.Configs
 	public sealed class LevelData : ILevelData
 	{
 		[field: SerializeField]
-		public int levelIndex { get; private set; }
+		public byte minDestroyBlocksLineLength { get; private set; } = 3;
 		
+		[field: SerializeField]
+		public int levelIndex { get; private set; }
+
 		[field: SerializeField]
 		public Vector2Int gridSize { get; private set; }
 		

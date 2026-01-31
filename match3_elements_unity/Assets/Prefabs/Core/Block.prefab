@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beaa3e87f3d14c23a8db87bbabd42799, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.Blocks.BlockEntity
-  moveDuration: 0.2
+  <moveDuration>k__BackingField: 0.2
   animationPlayer: {fileID: 4231260464883065778}
 --- !u!114 &4623955756965753681
 MonoBehaviour:

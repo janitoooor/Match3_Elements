@@ -1,15 +1,15 @@
-using Core.Blocks;
 using UnityEngine;
 
 namespace Core.Grid
 {
-	public delegate void MovedBlockDelegate(IBlockEntity blockEntity);
-	
 	public interface IGridField
 	{
+		float cellSize { get; }
 		Vector2Int gridSize { get; }
 		void UpdateGridSize(int x, int y);
-		void PlaceBlockAtCell(IBlockEntity blockEntity, Vector2Int cell);
-		void MoveBlockToCell(IBlockEntity blockEntity, Vector2Int cell, MovedBlockDelegate callback);
+		float GetGridWidth();
+		float GetGridHeight();
+		Vector2 GetGridCenter();
+		Transform GetTransformParentForBlocksInCell();
 	}
 }

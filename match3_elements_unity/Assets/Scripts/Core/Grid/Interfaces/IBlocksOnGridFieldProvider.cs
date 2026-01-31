@@ -6,8 +6,8 @@ namespace Core.Grid
 {
 	public interface IBlocksOnGridFieldProvider
 	{
-		void AddBlockOnGrid(IBlockEntity blockEntity, Vector2Int cellPos);
-		void ChangeGridSize(int x, int y);
+		void AddBlockOnGrid(IBlockEntity blockEntity, Vector2Int cell);
+		void SetGridSize(int x, int y);
 		Vector2Int GetBlockCellToSwipe(IBlockEntity blockEntity, SwipeDirectionData swipeDirectionData);
 		void SwipeBlockTo(IBlockEntity blockEntity, Vector2Int cellToSwap, SwipeDirectionData swipeDirectionData);
 	}

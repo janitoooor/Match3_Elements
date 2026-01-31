@@ -1,10 +1,8 @@
-using System;
-using Core.Blocks;
 using UnityEngine;
 
 namespace Core.Grid
 {
-	public sealed class GridField : MonoBehaviour, IGridField, IGridFieldInfo
+	public sealed class GridField : MonoBehaviour, IGridField
 	{
 		[SerializeField]
 		private float minPaddingX = 1f;
@@ -15,13 +13,13 @@ namespace Core.Grid
 		[field: SerializeField]
 		public Vector2Int gridSize { get; private set; } = new (10, 10);
 		
-		[SerializeField]
-		private float cellSize = 1f;
+		[field: SerializeField]
+		public float cellSize { get; private set; } = 1f;
 		
 #if UNITY_EDITOR
 		[SerializeField]
 		private Color gridColor = Color.white;
-		
+
 		private void OnDrawGizmos()
 		{
 			if (!enabled) 
@@ -52,18 +50,7 @@ namespace Core.Grid
 		
 		public void UpdateGridSize(int x, int y)
 			=> gridSize = new Vector2Int(x, y);
-
-		public void PlaceBlockAtCell(IBlockEntity blockEntity, Vector2Int cell)
-		{
-			if (cell.x < 0 || cell.x >= gridSize.x || cell.y < 0 || cell.y >= gridSize.y)
-				throw new ArgumentOutOfRangeException();
-
-			blockEntity.PlaceAt(transform, CalculateBlockCellPosition(cell.x, cell.y));
-		}
 		
-		public void MoveBlockToCell(IBlockEntity blockEntity, Vector2Int cell, MovedBlockDelegate callback)
-			=> blockEntity.MoveTo(CalculateBlockCellPosition(cell.x, cell.y), callback);
-
 		public float GetGridWidth()
 			=> gridSize.x * cellSize + minPaddingX;
 
@@ -77,17 +64,8 @@ namespace Core.Grid
 			
 			return new Vector2(centerX, centerY);
 		}
-		
-		private Vector3 CalculateBlockCellPosition(int x, int y)
-			=> new(
-				CalculateCellSizeOffset(x), 
-				CalculateCellSizeOffset(y),
-				CalculateZOffset(x, y));
 
-		private static float CalculateZOffset(int x, int y)
-			=> -(y * 0.1f + x * 0.05f);
-
-		private float CalculateCellSizeOffset(int y)
-			=> y * cellSize + cellSize / 2;
+		public Transform GetTransformParentForBlocksInCell()
+			=> transform;
 	}
 }

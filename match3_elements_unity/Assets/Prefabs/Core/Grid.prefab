@@ -47,7 +47,7 @@ MonoBehaviour:
   minPaddingX: 2
   minPaddingY: 5
   <gridSize>k__BackingField: {x: 10, y: 10}
-  cellSize: 2
+  <cellSize>k__BackingField: 2
   gridColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &6550030170504411149
 GameObject:
@@ -73,7 +73,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6550030170504411149}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

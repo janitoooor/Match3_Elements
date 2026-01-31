@@ -7,15 +7,15 @@ namespace Core.Grid
 {
 	public sealed class BlocksOnGridSwipeModel : IBlocksOnGridSwipeModel
 	{
-		private readonly IGridFieldInfo gridFieldInfo;
+		private readonly IGridField gridField;
 		private readonly IBlocksOnGridFieldProvider blocksOnGridFieldProvider;
 
 		[Inject]
 		public BlocksOnGridSwipeModel(
-			IGridFieldInfo gridFieldInfo, 
+			IGridField gridField, 
 			IBlocksOnGridFieldProvider blocksOnGridFieldProvider)
 		{
-			this.gridFieldInfo = gridFieldInfo;
+			this.gridField = gridField;
 			this.blocksOnGridFieldProvider = blocksOnGridFieldProvider;
 		}
 
@@ -23,7 +23,7 @@ namespace Core.Grid
 		{
 			var cellToSwap = blocksOnGridFieldProvider.GetBlockCellToSwipe(blockEntity, swipeDirectionData);
 			
-			if (IsCellToSwapInsideGridField(cellToSwap, gridFieldInfo.gridSize))
+			if (IsCellToSwapInsideGridField(cellToSwap, gridField.gridSize))
 				blocksOnGridFieldProvider.SwipeBlockTo(blockEntity, cellToSwap, swipeDirectionData);
 		}
 

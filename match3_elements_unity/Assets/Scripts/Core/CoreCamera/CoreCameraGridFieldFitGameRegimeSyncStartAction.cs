@@ -8,14 +8,14 @@ namespace Core.CoreCamera
 {
 	public sealed class CoreCameraGridFieldFitGameRegimeSyncStartAction : GameRegimeSyncStartAction, ITickable
 	{
-		private readonly IGridFieldInfo gridFieldInfo;
+		private readonly IGridField gridField;
 		private readonly Camera camera;
 		public override int priority => (int)CoreGameRegimeSyncStartActionPriority.CameraGridFieldFit;
 
 		[Inject]
-		public CoreCameraGridFieldFitGameRegimeSyncStartAction(IGridFieldInfo gridFieldInfo, Camera camera)
+		public CoreCameraGridFieldFitGameRegimeSyncStartAction(IGridField gridField, Camera camera)
 		{
-			this.gridFieldInfo = gridFieldInfo;
+			this.gridField = gridField;
 			this.camera = camera;
 		}
 
@@ -33,8 +33,8 @@ namespace Core.CoreCamera
 
 		private void ChangeCameraOrthographicSizeForGrid()
 		{
-			var gridWidth = gridFieldInfo.GetGridWidth();
-			var gridHeight = gridFieldInfo.GetGridHeight();
+			var gridWidth = gridField.GetGridWidth();
+			var gridHeight = gridField.GetGridHeight();
 			
 			var screenAspect = Screen.width / (float)Screen.height;
 			var targetAspect = gridWidth / gridHeight;
@@ -47,7 +47,7 @@ namespace Core.CoreCamera
 		
 		private void CenterCameraOnGrid()
 		{
-			var gridCenter = gridFieldInfo.GetGridCenter();
+			var gridCenter = gridField.GetGridCenter();
 			var cameraPos = camera.transform.position;
             
 			camera.transform.position = new Vector3(

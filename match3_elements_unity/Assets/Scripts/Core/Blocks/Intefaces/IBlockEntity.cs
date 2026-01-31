@@ -1,14 +1,14 @@
-using Core.Animation.Configs;
-using Core.Grid;
 using UnityEngine;
 
 namespace Core.Blocks
 {
 	public interface IBlockEntity
 	{
-		void MoveTo(Vector3 localPosition, MovedBlockDelegate callback);
-		void Setup(IAnimationSkinData getAnimationSkinData);
+		float moveDuration { get; }
+		void Setup(IBlockSkinData getBlockSkinData);
 		void PlaceAt(Transform transformParent, Vector3 localPosition);
 		void KillBlock();
+		Vector3 GetLocalPosition();
+		void SetLocalPosition(Vector3 localPosition);
 	}
 }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Core.Animation.Configs;
 using Core.Enums;
 using Core.Interfaces;
 using Core.SpawnContainer;
@@ -13,7 +12,7 @@ namespace Core.Blocks
 		
 		private readonly ISpawnerInContainer spawnerInContainer;
 		private readonly ICorePrefabsContainer corePrefabsContainer;
-		private readonly IAnimationsContainer animationsContainer;
+		private readonly IBlocsContainer blocsContainer;
 
 		private readonly List<IBlockEntity> spawnedBlocks;
 		private readonly Queue<IBlockEntity> blocksPool = new();
@@ -22,20 +21,20 @@ namespace Core.Blocks
 		public BlocksGenerator(
 			ISpawnerInContainer spawnerInContainer, 
 			ICorePrefabsContainer corePrefabsContainer,
-			IAnimationsContainer animationsContainer)
+			IBlocsContainer blocsContainer)
 		{
 			this.spawnerInContainer = spawnerInContainer;
 			this.corePrefabsContainer = corePrefabsContainer;
-			this.animationsContainer = animationsContainer;
+			this.blocsContainer = blocsContainer;
 
 			spawnedBlocks = new(spawnerInContainer.GetContainerSpawnedEntities<BlockEntity>(SPAWN_CONTAINER_TYPE));
 			blocksPool = new (spawnedBlocks);
 		}
 
-		public IBlockEntity GenerateBlock(AnimationSkin skin)
+		public IBlockEntity GenerateBlock(BlockSkin skin)
 		{
 			var block = GetBlockEntity();
-			block.Setup(animationsContainer.GetAnimationSkinData(skin));
+			block.Setup(blocsContainer.GetBlockSkinData(skin));
 			return block;
 		}
 
