@@ -97,6 +97,19 @@ namespace Core.Grid
 			SafeMoveBlockToCell(blockEntity, sourceNeighbourCell);
 			SafeMoveBlockToCell(neighbourBlockEntity, sourceCell);
 		}
+
+		private void SingleMoveBlockToCell(IBlockEntity blockEntity, Vector2Int sourceCell, Vector2Int targetCell)
+		{
+			gridCells[sourceCell] = null;
+			
+			gridCells[targetCell] = blockEntity;
+			blocksOnGrid[blockEntity] = targetCell;
+			
+			var targetCellSortingOrder = CalculateBlockRendererSortingOrderForCell(targetCell.x, targetCell.y);
+			SetSourceBlockRendererSortingOderBeforeMove(blockEntity, targetCellSortingOrder);
+			
+			SafeMoveBlockToCell(blockEntity, targetCell, TryFallBlockAfterSingleMove(sourceCell, targetCell));
+		}
 		
 		private void SafeMoveBlockToCell(IBlockEntity blockEntity, Vector2Int targetCell, 
 			MovedBlockDelegate callback = null)
@@ -147,19 +160,6 @@ namespace Core.Grid
 				
 			if (upNeighbourBlock != null && gridCells[sourceCell] == null)
 				SingleMoveBlockToCell(upNeighbourBlock, upNeighbourCell, sourceCell);
-		}
-
-		private void SingleMoveBlockToCell(IBlockEntity blockEntity, Vector2Int sourceCell, Vector2Int targetCell)
-		{
-			gridCells[sourceCell] = null;
-			
-			gridCells[targetCell] = blockEntity;
-			blocksOnGrid[blockEntity] = targetCell;
-			
-			var targetCellSortingOrder = CalculateBlockRendererSortingOrderForCell(targetCell.x, targetCell.y);
-			SetSourceBlockRendererSortingOderBeforeMove(blockEntity, targetCellSortingOrder);
-			
-			SafeMoveBlockToCell(blockEntity, targetCell, TryFallBlockAfterSingleMove(sourceCell, targetCell));
 		}
 
 		private static void SetSourceBlockRendererSortingOderBeforeMove(IBlockEntity blockEntity, int finishSortingOrder)
