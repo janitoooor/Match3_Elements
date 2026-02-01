@@ -91,7 +91,7 @@ namespace Core.Grid
 			var blockSortingOrder = blockEntity.rendererSortingOrder;
 			var neighbourBlockSortingOrder = neighbourBlockEntity.rendererSortingOrder;
 			
-			SetSourceBlockRendererSortingOderBeforeMove(blockEntity, neighbourBlockSortingOrder);
+			SetSourceBlockRendererSortingOderBeforeMove(blockEntity, neighbourBlockSortingOrder, sourceNeighbourCell.y);
 			neighbourBlockEntity.SetRendererSortingOder(Mathf.Min(blockSortingOrder, neighbourBlockSortingOrder) + 1);
 			
 			SafeMoveBlockToCell(blockEntity, sourceNeighbourCell);
@@ -106,7 +106,7 @@ namespace Core.Grid
 			blocksOnGrid[blockEntity] = targetCell;
 			
 			var targetCellSortingOrder = CalculateBlockRendererSortingOrderForCell(targetCell.x, targetCell.y);
-			SetSourceBlockRendererSortingOderBeforeMove(blockEntity, targetCellSortingOrder);
+			SetSourceBlockRendererSortingOderBeforeMove(blockEntity, targetCellSortingOrder, targetCell.y);
 			
 			SafeMoveBlockToCell(blockEntity, targetCell, TryFallBlockAfterSingleMove(sourceCell, targetCell));
 		}
@@ -169,8 +169,6 @@ namespace Core.Grid
 			}
 		}
 
-		private static void SetSourceBlockRendererSortingOderBeforeMove(IBlockEntity blockEntity, int finishSortingOrder)
-			=> blockEntity.SetRendererSortingOder(Mathf.Max(blockEntity.rendererSortingOrder, finishSortingOrder) - 1);
 		private bool TryFallUpNeighbourAfterBlockMovedSide(int sourceDownCellX, int upNeighbourCellY)
 		{
 			var upNeighbourCell = new Vector2Int(sourceDownCellX, upNeighbourCellY);
@@ -188,6 +186,16 @@ namespace Core.Grid
 		private bool IsBlockInMovement(IBlockEntity upNeighbourBlock)
 			=> blockMovementProcessor.IsBlockInMovement(upNeighbourBlock);
 
+		private void SetSourceBlockRendererSortingOderBeforeMove(IBlockEntity blockEntity, int finishSortingOrder, 
+			int targetCellY)
+			=> blockEntity.SetRendererSortingOder(CalculateSourceBlockRendererSortingOderBeforeMove(
+				blockEntity, 
+				finishSortingOrder, 
+				targetCellY));
+
+		private int CalculateSourceBlockRendererSortingOderBeforeMove(IBlockEntity blockEntity, int finishSortingOrder,
+			int targetCellY)
+			=> Mathf.Max(blockEntity.rendererSortingOrder, finishSortingOrder) - (gridField.gridSize.y - targetCellY);
 
 		private static void SetBlockRendererSortingOderForCell(IBlockEntity blockEntity, Vector2Int cell)
 			=> blockEntity.SetRendererSortingOder(CalculateBlockRendererSortingOrderForCell(cell.x, cell.y));
@@ -200,7 +208,7 @@ namespace Core.Grid
 
 		private static int CalculateBlockRendererSortingOrderForCell(int x, int y)
 		{
-			const int cellSortingOrder = 10; 
+			const int cellSortingOrder = 100; 
 			return cellSortingOrder * (x + y);
 		}
 
