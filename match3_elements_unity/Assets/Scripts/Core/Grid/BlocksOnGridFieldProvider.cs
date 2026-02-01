@@ -61,7 +61,7 @@ namespace Core.Grid
 				return;
 			}
 			
-			if (blockMovementProcessor.IsBlockInMovement(blockEntity))
+			if (IsBlockInMovement(blockEntity))
 			{
 				Debug.Log($"====> block at loc pos {blockEntity.GetLocalPosition()} is in movement!");
 				return;
@@ -126,8 +126,8 @@ namespace Core.Grid
 			=> movedBlockEntity =>
 			{
 				SetBlockRendererSortingOderForCell(movedBlockEntity, targetCell);
-				callback?.Invoke(movedBlockEntity);
 				busyCells.Remove(targetCell);
+				callback?.Invoke(movedBlockEntity);
 			};
 
 		private MovedBlockDelegate TryFallBlockAfterSingleMove(Vector2Int sourceCell, Vector2Int targetCell)
@@ -137,33 +137,57 @@ namespace Core.Grid
 
 				if (downNeighbourCellY >= 0)
 					TryFallBlockAfterMovedSide(targetCell, downNeighbourCellY, movedBlockEntity);
-				
-				var upNeighbourCellY = sourceCell.y + 1;
 
-				if (upNeighbourCellY < gridField.gridSize.y)
-					TryFallUpNeighbourAfterBlockMovedSide(sourceCell, upNeighbourCellY);
+				TryFallUpNeighboursAfterBlockMovedSide(sourceCell);
 			};
-
+		
 		private void TryFallBlockAfterMovedSide(Vector2Int targetCell, int downNeighbourCellY, 
 			IBlockEntity movedBlockEntity)
 		{
 			var cellToFall = new Vector2Int(targetCell.x, downNeighbourCellY);
 
-			if (gridCells[cellToFall] == null)
-				SingleMoveBlockToCell(movedBlockEntity, targetCell, cellToFall);
+			var blockInCellToFall = gridCells[cellToFall];
+			if (blockInCellToFall == null)
+				FallBlockAfterMovedSide(targetCell, movedBlockEntity, cellToFall);
 		}
 
-		private void TryFallUpNeighbourAfterBlockMovedSide(Vector2Int sourceCell, int upNeighbourCellY)
+		private void FallBlockAfterMovedSide(Vector2Int targetCell, IBlockEntity movedBlockEntity, Vector2Int cellToFall)
 		{
-			var upNeighbourCell = new Vector2Int(sourceCell.x, upNeighbourCellY);
-			var upNeighbourBlock = gridCells[upNeighbourCell];
+			SingleMoveBlockToCell(movedBlockEntity, targetCell, cellToFall);
+			TryFallUpNeighboursAfterBlockMovedSide(targetCell);
+		}
+
+		private void TryFallUpNeighboursAfterBlockMovedSide(Vector2Int sourceCell)
+		{
+			var upNeighbourCellY = sourceCell.y + 1;
+			var isNeighbourFallen = true;
 				
-			if (upNeighbourBlock != null && gridCells[sourceCell] == null)
-				SingleMoveBlockToCell(upNeighbourBlock, upNeighbourCell, sourceCell);
+			while (upNeighbourCellY < gridField.gridSize.y && isNeighbourFallen)
+			{
+				isNeighbourFallen = TryFallUpNeighbourAfterBlockMovedSide(sourceCell.x, upNeighbourCellY);
+				upNeighbourCellY++;
+			}
 		}
 
 		private static void SetSourceBlockRendererSortingOderBeforeMove(IBlockEntity blockEntity, int finishSortingOrder)
 			=> blockEntity.SetRendererSortingOder(Mathf.Max(blockEntity.rendererSortingOrder, finishSortingOrder) - 1);
+		private bool TryFallUpNeighbourAfterBlockMovedSide(int sourceDownCellX, int upNeighbourCellY)
+		{
+			var upNeighbourCell = new Vector2Int(sourceDownCellX, upNeighbourCellY);
+			var upNeighbourBlock = gridCells[upNeighbourCell];
+
+			var downCell = new Vector2Int(sourceDownCellX, upNeighbourCellY - 1);
+			
+			if (IsBlockInMovement(upNeighbourBlock) || upNeighbourBlock == null || gridCells[downCell] != null)
+				return false;
+			
+			SingleMoveBlockToCell(upNeighbourBlock, upNeighbourCell, downCell);
+			return true;
+		}
+
+		private bool IsBlockInMovement(IBlockEntity upNeighbourBlock)
+			=> blockMovementProcessor.IsBlockInMovement(upNeighbourBlock);
+
 
 		private static void SetBlockRendererSortingOderForCell(IBlockEntity blockEntity, Vector2Int cell)
 			=> blockEntity.SetRendererSortingOder(CalculateBlockRendererSortingOrderForCell(cell.x, cell.y));
