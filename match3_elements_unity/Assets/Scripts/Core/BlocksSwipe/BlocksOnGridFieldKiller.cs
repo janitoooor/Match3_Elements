@@ -140,7 +140,7 @@ namespace Core.BlocksSwipe
 
 		private bool IsBlockMatch(IBlockEntity blockToCheck, IBlockEntity targetBlock)
 			=> blockToCheck != null 
-			   && !blocksOnGridFieldMover.IsBlockUnAvailable(targetBlock)
+			   && !blocksOnGridFieldMover.IsBlockUnAvailable(blockToCheck)
 			   && blockToCheck.blockSkin == targetBlock.blockSkin;
 
 		private void KillAllMarkedBlocks(HashSet<IBlockEntity> markedBlocsForKill)
