@@ -18,8 +18,8 @@ MonoBehaviour:
   <maxBalloonsCount>k__BackingField: 3
   <maxSpeed>k__BackingField: 1
   <minSpeed>k__BackingField: 0.5
-  <amplitude>k__BackingField: 0.43
-  <frequency>k__BackingField: 1
+  <amplitude>k__BackingField: 1
+  <frequency>k__BackingField: 0.5
   <waveCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
@@ -46,6 +46,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   <spawnOffsetX>k__BackingField: 2
   <spawnOffsetYTop>k__BackingField: 2
-  <spawnOffsetYBot>k__BackingField: 5
+  <spawnOffsetYBot>k__BackingField: 6
   <spawnBalloonsCdMin>k__BackingField: 0.6
   <spawnBalloonsCdMax>k__BackingField: 1.2

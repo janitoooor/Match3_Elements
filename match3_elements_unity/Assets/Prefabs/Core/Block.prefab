@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.Blocks.BlockEntity
   animationPlayer: {fileID: 4231260464883065778}
-  <moveDuration>k__BackingField: 0.14
+  <moveDuration>k__BackingField: 0.2
 --- !u!114 &4623955756965753681
 MonoBehaviour:
   m_ObjectHideFlags: 0
