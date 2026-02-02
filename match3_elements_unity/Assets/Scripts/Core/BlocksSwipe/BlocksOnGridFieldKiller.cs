@@ -34,71 +34,58 @@ namespace Core.BlocksSwipe
 			MarkBlocksForKillInLines(horizontalLines, markedBlocsForKill);
 			MarkBlocksForKillInLines(verticalLines, markedBlocsForKill);
     
-			MarkBlocksNeighboursForKillInKilledLines(block,markedBlocsForKill, horizontalLines, true);
-			MarkBlocksNeighboursForKillInKilledLines(block, markedBlocsForKill, verticalLines, false);
+			MarkBlocksNeighboursForKillInKilledLines(markedBlocsForKill, horizontalLines);
+			MarkBlocksNeighboursForKillInKilledLines(markedBlocsForKill, verticalLines);
 			
 			KillAllMarkedBlocks(markedBlocsForKill);
 			
 			markedBlocsForKill.Clear();
 		}
 		
-		private void MarkBlocksNeighboursForKillInKilledLines(IBlockEntity originalBlock, 
-			HashSet<IBlockEntity> markedBlocsForKill, List<List<IBlockEntity>> blocksLines, bool isHorizontalLine)
+		private void MarkBlocksNeighboursForKillInKilledLines(HashSet<IBlockEntity> markedBlocsForKill, 
+			List<List<IBlockEntity>> blocksLines)
 		{
 			foreach (var blockLine in blocksLines)
-			foreach (var matchBlock in blockLine)
-				FindAndAddNeighborsInDirection(
-					originalBlock, 
-					markedBlocsForKill, 
-					blocksOnGridRepository.blocksOnGridField[matchBlock], 
-					isHorizontalLine);
-		}
-
-		private void FindAndAddNeighborsInDirection(IBlockEntity block, HashSet<IBlockEntity> markedBlocsForKill, 
-			Vector2Int startCell, bool isHorizontalLine)
-		{
-			if (isHorizontalLine)
-				TryMarkForKillNeighboursInVerticalDirection(block, markedBlocsForKill, startCell);
-			else
-				TryMarkForKillNeighboursInHorizontalDirection(block, markedBlocsForKill, startCell);
-		}
-
-		private void TryMarkForKillNeighboursInVerticalDirection(IBlockEntity block, 
-			HashSet<IBlockEntity> markedBlocsForKill, Vector2Int startCell)
-		{
-			for (var i = startCell.y + 1; i < blocksOnGridRepository.gridSize.y; i++)
-				if (!TryMarkForKillNeighbour(block, markedBlocsForKill, startCell.x, i))
-					break;
-
-			for (var i = startCell.y - 1; i >= 0; i--)
-				if (!TryMarkForKillNeighbour(block, markedBlocsForKill, startCell.x, i))
-					break;
+				foreach (var matchBlock in blockLine)
+					FindAllConnectedBlocks(matchBlock, markedBlocsForKill);
 		}
 		
-		private void TryMarkForKillNeighboursInHorizontalDirection(IBlockEntity block, 
-			HashSet<IBlockEntity> markedBlocsForKill, Vector2Int startCell)
+		private void FindAllConnectedBlocks(IBlockEntity startBlock, HashSet<IBlockEntity> markedBlocsForKill)
 		{
-			for (var i = startCell.x + 1; i < blocksOnGridRepository.gridSize.x; i++)
-				if (!TryMarkForKillNeighbour(block, markedBlocsForKill, i, startCell.y))
-					break;
-
-			for (var i = startCell.x - 1; i >= 0; i--)
-				if (!TryMarkForKillNeighbour(block, markedBlocsForKill, i, startCell.y))
-					break;
+			var stack = new Stack<IBlockEntity>();
+			stack.Push(startBlock);
+    
+			while (stack.Count > 0)
+			{
+				var currentBlock = stack.Pop();
+        
+				if (startBlock != currentBlock && !markedBlocsForKill.Add(currentBlock))
+					continue;
+				
+				var currentCell = blocksOnGridRepository.blocksOnGridField[currentBlock];
+            
+				CheckAndAddNeighbor(currentBlock, currentCell, 0, 1, stack, markedBlocsForKill);
+				CheckAndAddNeighbor(currentBlock, currentCell, 0, -1, stack, markedBlocsForKill);
+				CheckAndAddNeighbor(currentBlock, currentCell, 1, 0, stack, markedBlocsForKill);
+				CheckAndAddNeighbor(currentBlock, currentCell, -1, 0, stack, markedBlocsForKill);
+			}
 		}
-
-		private bool TryMarkForKillNeighbour(IBlockEntity block, HashSet<IBlockEntity> markedBlocsForKill, int x, int y)
+			
+		private void CheckAndAddNeighbor(IBlockEntity currentBlock, Vector2Int currentCell, 
+			int dx, int dy, Stack<IBlockEntity> stack, HashSet<IBlockEntity> markedBlocsForKill)
 		{
-			var neighbourCell = new Vector2Int(x, y);
-			
-			var neighbourBlock = blocksOnGridRepository.gridCells[neighbourCell];
-			
-			if (IsBlockMatch(neighbourBlock, block))
-				markedBlocsForKill.Add(neighbourBlock);
-			else
-				return false;
-			
-			return true;
+			var neighborCell = new Vector2Int(currentCell.x + dx, currentCell.y + dy);
+    
+			if (neighborCell.x < 0 || neighborCell.x >= blocksOnGridRepository.gridSize.x ||
+			    neighborCell.y < 0 || neighborCell.y >= blocksOnGridRepository.gridSize.y)
+				return;
+        
+			var neighborBlock = blocksOnGridRepository.gridCells[neighborCell];
+    
+			if (neighborBlock != null && 
+			    !markedBlocsForKill.Contains(neighborBlock) && 
+			    IsBlockMatch(neighborBlock, currentBlock))
+				stack.Push(neighborBlock);
 		}
 
 		private List<List<IBlockEntity>> FindMatchingBlocksInLine(IBlockEntity block, Vector2Int blockCell, 
