@@ -13,6 +13,9 @@ namespace Core.BlocksSwipe
 		private readonly IBlocksOnGridRepository blocksOnGridRepository;
 		private readonly IBlocksOnGridFieldMover blocksOnGridFieldMover;
 
+		private readonly Stack<IBlockEntity> tempConnectedBlocsStack = new();
+		
+		
 		[Inject]
 		public BlocksOnGridFieldKiller(
 			IBlocksOnGridRepository blocksOnGridRepository, 
@@ -52,27 +55,28 @@ namespace Core.BlocksSwipe
 		
 		private void FindAllConnectedBlocks(IBlockEntity startBlock, HashSet<IBlockEntity> markedBlocsForKill)
 		{
-			var stack = new Stack<IBlockEntity>();
-			stack.Push(startBlock);
+			tempConnectedBlocsStack.Push(startBlock);
     
-			while (stack.Count > 0)
+			while (tempConnectedBlocsStack.Count > 0)
 			{
-				var currentBlock = stack.Pop();
+				var currentBlock = tempConnectedBlocsStack.Pop();
         
 				if (startBlock != currentBlock && !markedBlocsForKill.Add(currentBlock))
 					continue;
 				
 				var currentCell = blocksOnGridRepository.blocksOnGridField[currentBlock];
             
-				CheckAndAddNeighbor(currentBlock, currentCell, 0, 1, stack, markedBlocsForKill);
-				CheckAndAddNeighbor(currentBlock, currentCell, 0, -1, stack, markedBlocsForKill);
-				CheckAndAddNeighbor(currentBlock, currentCell, 1, 0, stack, markedBlocsForKill);
-				CheckAndAddNeighbor(currentBlock, currentCell, -1, 0, stack, markedBlocsForKill);
+				CheckAndAddNeighbor(currentBlock, currentCell, 0, 1, markedBlocsForKill);
+				CheckAndAddNeighbor(currentBlock, currentCell, 0, -1, markedBlocsForKill);
+				CheckAndAddNeighbor(currentBlock, currentCell, 1, 0, markedBlocsForKill);
+				CheckAndAddNeighbor(currentBlock, currentCell, -1, 0, markedBlocsForKill);
 			}
+			
+			tempConnectedBlocsStack.Clear();
 		}
 			
 		private void CheckAndAddNeighbor(IBlockEntity currentBlock, Vector2Int currentCell, 
-			int dx, int dy, Stack<IBlockEntity> stack, HashSet<IBlockEntity> markedBlocsForKill)
+			int dx, int dy, HashSet<IBlockEntity> markedBlocsForKill)
 		{
 			var neighborCell = new Vector2Int(currentCell.x + dx, currentCell.y + dy);
     
@@ -85,7 +89,7 @@ namespace Core.BlocksSwipe
 			if (neighborBlock != null && 
 			    !markedBlocsForKill.Contains(neighborBlock) && 
 			    IsBlockMatch(neighborBlock, currentBlock))
-				stack.Push(neighborBlock);
+				tempConnectedBlocsStack.Push(neighborBlock);
 		}
 
 		private List<List<IBlockEntity>> FindMatchingBlocksInLine(IBlockEntity block, Vector2Int blockCell, 
