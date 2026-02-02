@@ -110,8 +110,6 @@ sysinfo.txt
 mono_crash.*
 
 # Build outputs
-*.apk
-*.aab
 *.unitypackage
 *.unitypackage.meta
 *.app

@@ -138,3 +138,7 @@
 *.gz lfs-file
 *.rar lfs-file
 *.tar lfs-file
+
+#unity builds
+*.apk lfs-file
+*.aab lfs-file
