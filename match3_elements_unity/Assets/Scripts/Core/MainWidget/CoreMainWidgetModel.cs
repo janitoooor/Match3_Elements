@@ -8,21 +8,21 @@ namespace Core.MainWidget
 	public sealed class CoreMainWidgetModel : ICoreMainWidgetModel
 	{
 		private readonly IGameRegimeLoader gameRegimeLoader;
-		private readonly ICurrentLevelProvider currentLevelProvider;
+		private readonly INextLevelLoader nextLevelLoader;
 
 		[Inject]
-		public CoreMainWidgetModel(IGameRegimeLoader gameRegimeLoader, ICurrentLevelProvider currentLevelProvider)
+		public CoreMainWidgetModel(IGameRegimeLoader gameRegimeLoader, INextLevelLoader nextLevelLoader)
 		{
 			this.gameRegimeLoader = gameRegimeLoader;
-			this.currentLevelProvider = currentLevelProvider;
+			this.nextLevelLoader = nextLevelLoader;
 		}
 
 		public void HandleButtonClick(CoreMainWidgetButtonType buttonType)
 		{
 			if (buttonType == CoreMainWidgetButtonType.NextLevel)
-				currentLevelProvider.ChangeCurrentLevel();
-			
-			gameRegimeLoader.LoadRegime(GameRegime.Core);
+				nextLevelLoader.LoadNextLevel();
+			else
+				gameRegimeLoader.RestartCurrentGameRegime();
 		}
 	}
 }

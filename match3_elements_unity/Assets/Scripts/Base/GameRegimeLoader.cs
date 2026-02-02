@@ -38,6 +38,9 @@ namespace Base
 			LoadCommonScene();
 		}
 
+		public void RestartCurrentGameRegime()
+			=> LoadRegime(currentGameRegime ?? default);
+
 		public void LoadRegime(GameRegime gameRegime)
 		{
 			guiEngine.ShowProgressLoadingView();
@@ -47,7 +50,7 @@ namespace Base
 			else
 				SetCurrentRegimeAndLoad(gameRegime);
 		}
-		
+
 		private void TryUnloadCurrentGameRegime(SceneUnLoadedDelegate unLoadedCallback)
 			=> sceneLoadProvider.UnloadSceneAsync(
 				GetRegimeScene(currentGameRegime), 

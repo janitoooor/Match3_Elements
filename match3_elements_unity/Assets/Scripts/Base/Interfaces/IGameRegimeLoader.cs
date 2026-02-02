@@ -4,5 +4,6 @@ namespace Base
 	{
 		void LoadDefaultRegime();
 		void LoadRegime(GameRegime gameRegime);
+		void RestartCurrentGameRegime();
 	}
 }

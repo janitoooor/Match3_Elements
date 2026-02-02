@@ -37,7 +37,7 @@ namespace Core.Level
 			
 			Container.Bind<IBlocksGenerator>().To<BlocksGenerator>().AsSingle();
 			
-			Container.Bind<IBlocksOnGridFieldProvider>().To<BlocksOnGridFieldProvider>().AsSingle();
+			Container.BindInterfacesTo<BlocksOnGridFieldProvider>().AsSingle();
 		}
 
 		private void BindLevel()
@@ -52,6 +52,9 @@ namespace Core.Level
 			
 			Container.Bind<ICurrentLevelProvider>().To<CurrentLevelProvider>().AsSingle();
 			Container.Bind<ILevelConstructor>().To<LevelConstructor>().AsSingle();
+
+			Container.Bind<LevelFinishController>().AsSingle().NonLazy();
+			Container.Bind<INextLevelLoader>().To<NextLevelLoader>().AsSingle();
 		}
 
 		private void BindBlockSwipe()
