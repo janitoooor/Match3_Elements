@@ -46,6 +46,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   <spawnOffsetX>k__BackingField: 2
   <spawnOffsetYTop>k__BackingField: 2
-  <spawnOffsetYBot>k__BackingField: 6
+  <spawnDivideOffsetY>k__BackingField: 3
   <spawnBalloonsCdMin>k__BackingField: 0.6
   <spawnBalloonsCdMax>k__BackingField: 1.2

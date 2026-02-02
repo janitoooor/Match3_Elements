@@ -34,7 +34,7 @@ namespace Core.Balloons
 		public float spawnOffsetYTop { get; private set; } = 1f;
 		
 		[field: SerializeField]
-		public float spawnOffsetYBot { get; private set; } = 1f;
+		public float spawnDivideOffsetY { get; private set; } = 4f;
 
 		[field: SerializeField]
 		public float spawnBalloonsCdMin { get; private set; } = 0.3f;

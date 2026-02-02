@@ -14,7 +14,7 @@ namespace Core.Balloons
 		AnimationCurve waveCurve { get; }
 		float spawnOffsetX { get; }
 		float spawnOffsetYTop { get; }
-		float spawnOffsetYBot { get; }
+		float spawnDivideOffsetY { get; }
 		float spawnBalloonsCdMin { get; }
 		float spawnBalloonsCdMax { get; }
 	}

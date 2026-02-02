@@ -58,7 +58,7 @@ namespace Core.Balloons
 
 			x *= balloon.isMoveFromRight ? -1 : 1;
 			
-			var screenBoundXPos = GetLaunchPosX(!balloon.isMoveFromRight, out _, out _);
+			var screenBoundXPos = GetLaunchPosX(!balloon.isMoveFromRight, out _);
 			
 			if (balloon.isMoveFromRight ? x < screenBoundXPos : x > screenBoundXPos)
 				LaunchBalloon(balloon);
@@ -103,22 +103,22 @@ namespace Core.Balloons
 
 		private Vector3 GetLaunchPosition(bool fromRight)
 		{
-			var spawnX = GetLaunchPosX(fromRight, out var screenRightTop, out var screenLeftBot);
-			var spawnY = GetLaunchPosY(screenLeftBot, screenRightTop);
+			var spawnX = GetLaunchPosX(fromRight, out var screenRightTop);
+			var spawnY = GetLaunchPosY(screenRightTop);
 
 			return new Vector3(spawnX, spawnY, 0);
 		}
 
-		private float GetLaunchPosY(Vector3 screenLeftBot, Vector3 screenRightTop)
+		private float GetLaunchPosY(Vector3 screenRightTop)
 			=> random.Between(
-				screenLeftBot.y + balloonsContainer.spawnOffsetYBot, 
+				screenRightTop.y / balloonsContainer.spawnDivideOffsetY, 
 				screenRightTop.y - balloonsContainer.spawnOffsetYTop);
 
-		private float GetLaunchPosX(bool fromRight, out Vector3 screenRightTop, out Vector3 screenLeftBot)
+		private float GetLaunchPosX(bool fromRight, out Vector3 screenRightTop)
 		{
 			var offsetX = balloonsContainer.spawnOffsetX;
 			
-			screenLeftBot = camera.ViewportToWorldPoint(Vector2.zero);
+			var screenLeftBot = camera.ViewportToWorldPoint(Vector2.zero);
 			screenRightTop = camera.ViewportToWorldPoint(Vector2.one);
 			
 			return fromRight ? screenRightTop.x + offsetX : screenLeftBot.x - offsetX;
