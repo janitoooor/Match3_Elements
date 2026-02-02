@@ -13,9 +13,9 @@ namespace Common.MainWidget
 		private readonly T prefabsContainer;
 		private readonly IGuiEngine guiEngine;
 		
-		private protected TG widget;
+		protected TG widget;
 		
-		private protected abstract TP widgetKey { get; }
+		protected abstract TP widgetKey { get; }
 
 		protected WidgetAsyncDataInitialize(
 			T prefabsContainer,
@@ -35,7 +35,7 @@ namespace Common.MainWidget
 			yield return null;
 		}
 
-		private protected abstract void InitializeRegisteredWidget();
+		protected abstract void InitializeRegisteredWidget();
 
 		public void ShowWidget()
 			=> widget.Open();

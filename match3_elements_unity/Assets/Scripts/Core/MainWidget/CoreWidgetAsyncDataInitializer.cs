@@ -12,7 +12,7 @@ namespace Core.MainWidget
 	{
 		private readonly ICoreMainWidgetModel coreMainWidgetModel;
 
-		private protected override CorePrefabsKeys widgetKey => CorePrefabsKeys.MainWidget;
+		protected override CorePrefabsKeys widgetKey => CorePrefabsKeys.MainWidget;
 
 		public override byte priority => (byte)CoreAsyncDataInitializePriority.MainWidget;
 		
@@ -24,7 +24,7 @@ namespace Core.MainWidget
 			: base(prefabsContainer, guiEngine)
 			=> this.coreMainWidgetModel = coreMainWidgetModel;
 		
-		private protected override void InitializeRegisteredWidget()
+		protected override void InitializeRegisteredWidget()
 			=> widget.OnCoreMainWidgetButtonClicked += OnCoreMainWidgetButtonClicked;
 
 		private void OnCoreMainWidgetButtonClicked(CoreMainWidgetButtonType buttonType)

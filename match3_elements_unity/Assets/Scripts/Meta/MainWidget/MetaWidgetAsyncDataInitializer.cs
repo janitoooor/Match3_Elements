@@ -13,7 +13,7 @@ namespace Meta.MainWidget
 	{
 		private readonly IMetaMainWidgetModel metaMainWidgetModel;
 
-		private protected override MetaPrefabsKeys widgetKey => MetaPrefabsKeys.MainWidget;
+		protected override MetaPrefabsKeys widgetKey => MetaPrefabsKeys.MainWidget;
 
 		public override byte priority => (byte)MetaAsyncDataInitializePriority.MainWidget;
 		
@@ -25,7 +25,7 @@ namespace Meta.MainWidget
 			: base(prefabsContainer, guiEngine)
 			=> this.metaMainWidgetModel = metaMainWidgetModel;
 		
-		private protected override void InitializeRegisteredWidget()
+		protected override void InitializeRegisteredWidget()
 			=> widget.OnStartButtonClicked += OnStartButtonClicked;
 
 		private void OnStartButtonClicked()
