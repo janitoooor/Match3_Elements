@@ -18,7 +18,7 @@ namespace Core.Grid
 			this.blocksOnGridRepository = blocksOnGridRepository;
 		}
 
-		public void PlaceBlockOnGrid(IBlockEntity blockEntity, LevelBlockData blockData)
+		public void PlaceBlockOnGrid(IBlockEntity blockEntity, ILevelBlockData blockData)
 		{
 			blocksOnGridRepository.AddBlockOnGrid(blockEntity, blockData.cellPos);
 

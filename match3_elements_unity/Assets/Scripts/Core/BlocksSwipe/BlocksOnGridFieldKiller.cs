@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Core.Blocks;
 using Core.Grid;
+using Core.Level;
 using UnityEngine;
 using Zenject;
 
@@ -12,17 +13,20 @@ namespace Core.BlocksSwipe
 		
 		private readonly IBlocksOnGridRepository blocksOnGridRepository;
 		private readonly IBlocksOnGridFieldMover blocksOnGridFieldMover;
-
+		private readonly ICurrentLevelDataProvider currentLevelDataProvider;
+		
 		private readonly Stack<IBlockEntity> tempConnectedBlocsStack = new();
 		
 		
 		[Inject]
 		public BlocksOnGridFieldKiller(
 			IBlocksOnGridRepository blocksOnGridRepository, 
-			IBlocksOnGridFieldMover blocksOnGridFieldMover)
+			IBlocksOnGridFieldMover blocksOnGridFieldMover,
+			ICurrentLevelDataProvider currentLevelDataProvider)
 		{
 			this.blocksOnGridRepository = blocksOnGridRepository;
 			this.blocksOnGridFieldMover = blocksOnGridFieldMover;
+			this.currentLevelDataProvider = currentLevelDataProvider;
 
 			blocksOnGridFieldMover.OnKillBlocksInLineRequest += TryKillBlocksInLine;
 		}
@@ -129,7 +133,7 @@ namespace Core.BlocksSwipe
 		
 		private bool TryAddLineToKillList(List<IBlockEntity> blockLine, HashSet<IBlockEntity> markedBlocsForKill)
 		{
-			if (blockLine.Count < 3)
+			if (blockLine.Count < currentLevelDataProvider.GetCurrentLevelData().minDestroyBlocksLineLength)
 				return false;
 			
 			foreach (var blockEntity in blockLine)

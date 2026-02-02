@@ -5,7 +5,7 @@ namespace Core.Grid
 {
 	public interface IBlocksOnGridConstructor
 	{
-		public void PlaceBlockOnGrid(IBlockEntity blockEntity, LevelBlockData blockData);
+		public void PlaceBlockOnGrid(IBlockEntity blockEntity, ILevelBlockData blockData);
 		public void ConstructGrid(int gridSizeX, int gridSizeY);
 	}
 }

@@ -39,7 +39,7 @@ namespace Base
 
 		private IEnumerator InitializeData(float maxProgress)
 		{
-			dataInitializers = dataInitializers.OrderByDescending(i => i.priority).ToList();
+			dataInitializers = dataInitializers.OrderBy(i => i.priority).ToList();
 			
 			var deltaProgress = maxProgress / dataInitializers.Count;
 			

@@ -6,18 +6,18 @@ namespace Core.Level
 	public sealed class NextLevelLoader : INextLevelLoader
 	{
 		private readonly IGameRegimeLoader gameRegimeLoader;
-		private readonly ICurrentLevelProvider currentLevelProvider;
+		private readonly ICurrentLevelChanger currentLevelChanger;
 
 		[Inject]
-		public NextLevelLoader(IGameRegimeLoader gameRegimeLoader, ICurrentLevelProvider currentLevelProvider)
+		public NextLevelLoader(IGameRegimeLoader gameRegimeLoader, ICurrentLevelChanger currentLevelChanger)
 		{
 			this.gameRegimeLoader = gameRegimeLoader;
-			this.currentLevelProvider = currentLevelProvider;
+			this.currentLevelChanger = currentLevelChanger;
 		}
 
 		public void LoadNextLevel()
 		{
-			currentLevelProvider.ChangeCurrentLevel();
+			currentLevelChanger.ChangeCurrentLevel();
 			gameRegimeLoader.RestartCurrentGameRegime();
 		}
 	}

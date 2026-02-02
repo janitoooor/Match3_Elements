@@ -1,4 +1,3 @@
-using Base;
 using Core.Enums;
 using Core.Level;
 using Zenject;
@@ -7,13 +6,13 @@ namespace Core.MainWidget
 {
 	public sealed class CoreMainWidgetModel : ICoreMainWidgetModel
 	{
-		private readonly IGameRegimeLoader gameRegimeLoader;
+		private readonly ILevelRestarter levelRestarter;
 		private readonly INextLevelLoader nextLevelLoader;
 
 		[Inject]
-		public CoreMainWidgetModel(IGameRegimeLoader gameRegimeLoader, INextLevelLoader nextLevelLoader)
+		public CoreMainWidgetModel(ILevelRestarter levelRestarter, INextLevelLoader nextLevelLoader)
 		{
-			this.gameRegimeLoader = gameRegimeLoader;
+			this.levelRestarter = levelRestarter;
 			this.nextLevelLoader = nextLevelLoader;
 		}
 
@@ -22,7 +21,7 @@ namespace Core.MainWidget
 			if (buttonType == CoreMainWidgetButtonType.NextLevel)
 				nextLevelLoader.LoadNextLevel();
 			else
-				gameRegimeLoader.RestartCurrentGameRegime();
+				levelRestarter.RestartLevel();
 		}
 	}
 }

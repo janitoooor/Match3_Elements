@@ -8,6 +8,8 @@ namespace Core.Grid
 {
 	public sealed class BlocksOnGridRepository : IBlocksOnGridRepository
 	{
+		public event OnBlocksOnGridChangedDelegate OnBlockOnGridChanged;
+		
 		private readonly IGridField gridField;
 		
 		private readonly Dictionary<IBlockEntity, Vector2Int> blocksOnGridFieldInternal = new();
@@ -33,6 +35,8 @@ namespace Core.Grid
 			
 			blocksOnGridFieldInternal.Add(blockEntity, cell);
 			gridCellsInternal[cell] = blockEntity;
+			
+			OnBlockOnGridChanged?.Invoke(cell, blockEntity);
 		}
 		
 		public void SetGridSize(int x, int y)
@@ -71,16 +75,23 @@ namespace Core.Grid
 		{
 			gridCellsInternal[blockCell] = null;
 			blocksOnGridFieldInternal.Remove(blockEntity);
+			
+			OnBlockOnGridChanged?.Invoke(blockCell, null);
 		}
 
 		public void SetBlockOnGrid(IBlockEntity blockEntity, Vector2Int cell)
 		{
 			blocksOnGridFieldInternal[blockEntity] = cell;
 			gridCellsInternal[cell] = blockEntity;
+			
+			OnBlockOnGridChanged?.Invoke(cell, blockEntity);
 		}
 
 		public void RemoveBlockFromCell(Vector2Int sourceCell)
-			=> gridCellsInternal[sourceCell] = null;
+		{
+			gridCellsInternal[sourceCell] = null;
+			OnBlockOnGridChanged?.Invoke(sourceCell, null);
+		}
 
 		public void AddKilledBlock(IBlockEntity blockEntity)
 			=> killedBlocksInternal.Add(blockEntity);

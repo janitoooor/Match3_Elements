@@ -20,6 +20,6 @@ namespace Base
 		}
 
 		private IOrderedEnumerable<IGameRegimeSyncStartAction> GetOrderedGameRegimes()
-			=> gameRegimeStartActions.OrderByDescending(a => a.priority);
+			=> gameRegimeStartActions.OrderBy(a => a.priority);
 	}
 }

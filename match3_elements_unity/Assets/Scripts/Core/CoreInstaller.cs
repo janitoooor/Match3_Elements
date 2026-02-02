@@ -1,6 +1,7 @@
 using Core.CoreCamera;
 using Core.Input;
 using Core.Interfaces;
+using Core.Saves;
 using Core.SpawnContainer;
 using UnityEngine;
 using Zenject;
@@ -17,6 +18,8 @@ namespace Core
 
 		public override void InstallBindings()
 		{
+			CoreSavesInstaller.Install(Container);
+			
 			Container.BindInterfacesTo<SwipeInputController>().AsSingle();
 			
 #if UNITY_EDITOR

@@ -5,8 +5,12 @@ using UnityEngine;
 
 namespace Core.Grid
 {
+	public delegate void OnBlocksOnGridChangedDelegate(Vector2Int cellPos, IBlockEntity blockEntity);
+	
 	public interface IBlocksOnGridRepository
 	{
+		event OnBlocksOnGridChangedDelegate OnBlockOnGridChanged;
+		
 		IReadOnlyDictionary<IBlockEntity, Vector2Int> blocksOnGridField { get; }
 		IReadOnlyDictionary<Vector2Int, IBlockEntity> gridCells { get; }
 		IReadOnlyCollection<IBlockEntity> killedBlocks { get; }
