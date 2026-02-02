@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.Grid.SimpleGrid
   minPaddingX: 2
-  minPaddingY: 5
+  minPaddingY: 8
   <gridSize>k__BackingField: {x: 10, y: 10}
   <cellSize>k__BackingField: 2
   gridColor: {r: 1, g: 1, b: 1, a: 1}
