@@ -153,8 +153,7 @@ namespace Core.BlocksSwipe
 		{
 			var killedBlockCell = blocksOnGridRepository.blocksOnGridField[blockEntity];
 
-			for (var y = killedBlockCell.y; y < blocksOnGridRepository.gridSize.y; y++)
-				blocksOnGridRepository.SetCellBusyByKill(new Vector2Int(killedBlockCell.x, y));
+			SetKilledBlockYNeighboursBusy(killedBlockCell, true);
 			
 			blocksOnGridRepository.AddKilledBlock(blockEntity);
         
@@ -163,8 +162,7 @@ namespace Core.BlocksSwipe
 
 		private void OnBlockKilled(IBlockEntity blockEntity, Vector2Int killedBlockCell)
 		{
-			for (var y = killedBlockCell.y; y < blocksOnGridRepository.gridSize.y; y++)
-				blocksOnGridRepository.SetCellUnBusyByKill(new Vector2Int(killedBlockCell.x, y));
+			SetKilledBlockYNeighboursBusy(killedBlockCell, false);
 			
 			blocksOnGridRepository.RemoveBlockFromGrid(blockEntity, killedBlockCell);
 			
@@ -174,6 +172,27 @@ namespace Core.BlocksSwipe
 				OnAllBlocksOnGridKilled?.Invoke();
 			else
 				blocksOnGridFieldMover.TryFallUpNeighboursAfterBlockMoved(killedBlockCell);
+		}
+
+		private void SetKilledBlockYNeighboursBusy(Vector2Int killedBlockCell, bool setBusy)
+		{
+			for (var y = killedBlockCell.y; y < blocksOnGridRepository.gridSize.y; y++)
+			{
+				var neighbourCell = new Vector2Int(killedBlockCell.x, y);
+
+				if (blocksOnGridRepository.gridCells[neighbourCell] != null)
+					SetKilledBlockYNeighbourBusy(neighbourCell, setBusy);
+				else
+					break;
+			}
+		}
+
+		private void SetKilledBlockYNeighbourBusy(Vector2Int cell, bool setBusy)
+		{
+			if (setBusy)
+				blocksOnGridRepository.SetCellBusyByKill(cell);
+			else
+				blocksOnGridRepository.SetCellUnBusyByKill(cell);
 		}
 	}
 }
