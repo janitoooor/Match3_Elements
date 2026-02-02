@@ -16,15 +16,18 @@ namespace Core.BlocksMovements
 		public BlockMovementProcessor(IBlockMovementsPool blockMovementsPool)
 			=> this.blockMovementsPool = blockMovementsPool;
 
-		public void MoveBlockTo(IBlockEntity block, Vector3 targetPosition, MovedBlockDelegate finishedCallback)
+		public void MoveBlockTo(IBlockEntity block, Vector3 targetPosition, bool isFallen, MovedBlockDelegate finishedCallback)
 		{
 			var movement = blockMovementsPool.GetBlockMovement();
-			movement.Init(block, targetPosition, finishedCallback);
-			activeMovements.Add(movement);
+			movement.Init(block, targetPosition, isFallen, finishedCallback);
+			activeMovements.Insert(0, movement);
 		}
 
 		public bool IsBlockInMovement(IBlockEntity blockEntity)
 			=> activeMovements.Any(movement => movement.blockEntity == blockEntity);
+
+		public bool AnyBlocksIsFall()
+			=> activeMovements.Any(a => a.isFall);
 
 		public void Tick()
 		{
@@ -46,9 +49,11 @@ namespace Core.BlocksMovements
 
 		private void FinishBlockMovement(IBlockMovement movement, int i)
 		{
+			activeMovements.RemoveAt(i);
+			
 			movement.SetBlockLocalPosition(movement.targetPosition);
 			movement.FinishMovement();
-			activeMovements.RemoveAt(i);
+			
 			blockMovementsPool.AddBlockMovement(movement);
 		}
 	}

@@ -5,6 +5,7 @@ namespace Core.Blocks
 {
 	public interface IBlockSkinData
 	{
+		BlockSkin blockSkin { get; }
 		IAnimationData GetAnimationData(AnimationType animationType);
 	}
 }

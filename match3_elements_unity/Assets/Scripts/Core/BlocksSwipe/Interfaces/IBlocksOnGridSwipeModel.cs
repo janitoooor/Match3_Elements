@@ -1,7 +1,7 @@
 using Core.Blocks;
 using Core.Input;
 
-namespace Core.Grid
+namespace Core.BlocksSwipe
 {
 	public interface IBlocksOnGridSwipeModel
 	{

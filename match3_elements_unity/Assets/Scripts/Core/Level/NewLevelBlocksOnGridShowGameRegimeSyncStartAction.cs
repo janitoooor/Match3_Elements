@@ -7,16 +7,16 @@ namespace Core.Level
 {
 	public sealed class NewLevelBlocksOnGridShowGameRegimeSyncStartAction : GameRegimeSyncStartAction
 	{
-		private readonly IBlocksOnGridFieldProvider blocksOnGridFieldProvider;
+		private readonly IBlocksOnGridRepository blocksOnGridRepository;
 		public override byte priority => (int)CoreGameRegimeSyncStartActionPriority.NewLevelBlocksOnGridShow;
 
 		[Inject]
-		public NewLevelBlocksOnGridShowGameRegimeSyncStartAction(IBlocksOnGridFieldProvider blocksOnGridFieldProvider)
-			=> this.blocksOnGridFieldProvider = blocksOnGridFieldProvider;
+		public NewLevelBlocksOnGridShowGameRegimeSyncStartAction(IBlocksOnGridRepository blocksOnGridRepository)
+			=> this.blocksOnGridRepository = blocksOnGridRepository;
 
 		public override void Perform()
 		{
-			foreach(var blockOnGridField in blocksOnGridFieldProvider.blocksOnGridField)
+			foreach(var blockOnGridField in blocksOnGridRepository.blocksOnGridField)
 				blockOnGridField.Key.ShowBlock();
 		}
 	}

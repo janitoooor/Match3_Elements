@@ -1,3 +1,4 @@
+using Core.BlocksSwipe;
 using Core.Grid;
 using Zenject;
 
@@ -10,14 +11,14 @@ namespace Core.Level
 		[Inject]
 		public LevelFinishController(
 			INextLevelLoader nextLevelLoader, 
-			IBlocksOnGridFieldClearedEvent gridFieldClearedEvent)
+			IAllBlocksOnGridKilledEvent gridKilledEvent)
 		{
 			this.nextLevelLoader = nextLevelLoader;
 			
-			gridFieldClearedEvent.OnBlocksOnGridFiledCleared += OnBlocksOnGridFiledCleared;
+			gridKilledEvent.OnAllBlocksOnGridKilled += OnAllBlocksOnGridKilled;
 		}
 
-		private void OnBlocksOnGridFiledCleared()
+		private void OnAllBlocksOnGridKilled()
 			=> nextLevelLoader.LoadNextLevel();
 	}
 }

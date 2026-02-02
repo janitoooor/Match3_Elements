@@ -19,6 +19,8 @@ namespace Core.Blocks
 		private IBlockSkinData blockSkinData;
 		
 		public int rendererSortingOrder => animationPlayer.rendererSortingOrder;
+
+		public BlockSkin blockSkin => blockSkinData.blockSkin;
 		
 		public void SetRendererSortingOder(int sortingLayer)
 			=> animationPlayer.SetRendererSortingOder(sortingLayer);
@@ -38,10 +40,10 @@ namespace Core.Blocks
 			animationPlayer.PlayAnimation(blockSkinData.GetAnimationData(AnimationType.Idle));
 		}
 
-		public void KillBlock()
+		public void KillBlock(KilledBlockDelegate killedCallback)
 			=> animationPlayer.PlayAnimation(
 				blockSkinData.GetAnimationData(AnimationType.Dead), 
-				DeadAnimationCallback());
+				DeadAnimationCallback(killedCallback));
 
 		public Vector3 GetLocalPosition()
 			=> transform.localPosition;
@@ -49,11 +51,12 @@ namespace Core.Blocks
 		public void SetLocalPosition(Vector3 localPosition)
 			=> transform.localPosition = localPosition;
 
-		private AnimationFinishedDelegate DeadAnimationCallback()
+		private AnimationFinishedDelegate DeadAnimationCallback(KilledBlockDelegate killedCallback)
 			=> () =>
 			{
 				gameObject.SetActive(false);
 				OnBlockEntityDead?.Invoke(this);
+				killedCallback?.Invoke();
 			};
 	}
 }

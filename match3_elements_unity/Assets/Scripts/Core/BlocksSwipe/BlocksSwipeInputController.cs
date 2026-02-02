@@ -3,7 +3,7 @@ using Core.Input;
 using UnityEngine;
 using Zenject;
 
-namespace Core.Grid
+namespace Core.BlocksSwipe
 {
 	public sealed class BlocksSwipeInputController
 	{

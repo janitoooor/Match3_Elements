@@ -9,20 +9,20 @@ namespace Core.Level
 	public sealed class LevelConstructor : ILevelConstructor
 	{
 		private const byte MAX_INSTANTIATED_BLOCS_PER_FRAME = 10;
-		
-		private readonly IBlocksOnGridFieldProvider blocksOnGridFieldProvider;
+
+		private readonly IBlocksOnGridConstructor blocksOnGridConstructor;
 		private readonly IBlocksGenerator blocksGenerator;
 
 		[Inject]
-		public LevelConstructor(IBlocksOnGridFieldProvider blocksOnGridFieldProvider, IBlocksGenerator blocksGenerator)
+		public LevelConstructor(IBlocksOnGridConstructor blocksOnGridConstructor, IBlocksGenerator blocksGenerator)
 		{
-			this.blocksOnGridFieldProvider = blocksOnGridFieldProvider;
+			this.blocksOnGridConstructor = blocksOnGridConstructor;
 			this.blocksGenerator = blocksGenerator;
 		}
 
 		public IEnumerator ConstructLevel(ILevelData levelData)
 		{
-			blocksOnGridFieldProvider.SetGridSize(levelData.gridSize.x, levelData.gridSize.y);
+			blocksOnGridConstructor.ConstructGrid(levelData.gridSize.x, levelData.gridSize.y);
 
 			byte instantiatedBlocsPerFrame = 0;
 			
@@ -36,8 +36,8 @@ namespace Core.Level
 			var blockData = levelData.levelBlockData[i];
 			var blockEntity = blocksGenerator.GenerateBlock(blockData.skin, out var isInstantiated);
 				
-			blocksOnGridFieldProvider.AddBlockOnGrid(blockEntity, blockData.cellPos);
-				
+			blocksOnGridConstructor.PlaceBlockOnGrid(blockEntity, blockData);
+
 			if (isInstantiated)
 				instantiatedBlocsPerFrame++;
 			

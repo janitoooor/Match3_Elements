@@ -1,5 +1,6 @@
 using Core.Blocks;
 using Core.BlocksMovements;
+using Core.BlocksSwipe;
 using Core.Grid;
 using Core.Level.Configs;
 using UnityEngine;
@@ -37,7 +38,9 @@ namespace Core.Level
 			
 			Container.Bind<IBlocksGenerator>().To<BlocksGenerator>().AsSingle();
 			
-			Container.BindInterfacesTo<BlocksOnGridFieldProvider>().AsSingle();
+			Container.Bind<IBlocksOnGridRepository>().To<BlocksOnGridRepository>().AsSingle();
+			Container.Bind<IBlocksOnGridConstructor>().To<BlocksOnGridConstructor>().AsSingle();
+			Container.Bind<IBlockOnGridRendererSortingOderProvider>().To<BlocksOnGridRendererSortingOderProvider>().AsSingle();
 		}
 
 		private void BindLevel()
@@ -62,6 +65,9 @@ namespace Core.Level
 			Container.Bind<IBlocksOnGridSwipeModel>().To<BlocksOnGridSwipeModel>().AsSingle();
 
 			Container.Bind<BlocksSwipeInputController>().AsSingle().NonLazy();
+			
+			Container.Bind<IBlocksOnGridFieldMover>().To<BlocksOnGridFieldMover>().AsSingle();
+			Container.Bind<IAllBlocksOnGridKilledEvent>().To<BlocksOnGridFieldKiller>().AsSingle();
 		}
 
 		private void BindBlockMovements()
