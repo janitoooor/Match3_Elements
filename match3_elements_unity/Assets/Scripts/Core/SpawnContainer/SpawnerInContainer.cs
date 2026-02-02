@@ -7,7 +7,7 @@ namespace Core.SpawnContainer
 {
 	public sealed class SpawnerInContainer : MonoBehaviour, ISpawnerInContainer
 	{
-		[SerializeField]
+		[SerializeField, ArrayElementTitle("containerType")]
 		private SpawnContainer[] spawnContainers;
 		
 		private readonly Dictionary<SpawnContainerType, SpawnContainer> cache = new();

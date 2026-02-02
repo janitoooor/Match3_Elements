@@ -4,5 +4,6 @@ namespace Core.Enums
 	{
 		MainWidget,
 		BlockEntity,
+		BalloonEntity,
 	}
 }

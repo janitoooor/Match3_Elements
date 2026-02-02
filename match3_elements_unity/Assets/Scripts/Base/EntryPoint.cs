@@ -18,6 +18,8 @@ namespace Base
 		
 		public override void InstallBindings()
 		{
+			Container.Bind<IRandom>().To<UnityRandom>().AsSingle();
+			
 			Container.Bind<Camera>().FromInstance(Camera.main);
 			
 			Container.Bind<IAsyncProcessor>().FromInstance(this);

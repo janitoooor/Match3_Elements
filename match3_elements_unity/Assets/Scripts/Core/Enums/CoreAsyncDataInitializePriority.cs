@@ -5,5 +5,6 @@ namespace Core.Enums
 		CoreSaves,
 		MainWidget,
 		LevelInitialization,
+		BallonsInitialization
 	}
 }

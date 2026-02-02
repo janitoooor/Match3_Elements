@@ -5,6 +5,7 @@ namespace Core.Enums
 		MainWidget,
 		CameraGridFieldFit,
 		NewLevelBlocksOnGridShow,
+		BalloonActivate,
 		
 		SwipeInputInitialize = byte.MaxValue,
 	}
