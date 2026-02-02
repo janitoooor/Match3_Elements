@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Base
 {
+#if UNITY_EDITOR
 	[CustomPropertyDrawer(typeof(ArrayElementTitleAttribute))]
 	public sealed class ArrayElementTitleDrawer : PropertyDrawer
 	{
@@ -72,4 +73,5 @@ namespace Base
 			return string.Empty;
 		}
 	}
+	#endif
 }

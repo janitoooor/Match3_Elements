@@ -7,7 +7,7 @@ using Core.Blocks;
 using Core.Enums;
 using Core.Grid;
 using Core.Level.Configs;
-using Unity.Plastic.Newtonsoft.Json;
+using Newtonsoft.Json;
 using UnityEngine;
 using Zenject;
 
