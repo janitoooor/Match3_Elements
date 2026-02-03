@@ -10,11 +10,13 @@ namespace Core.Blocks
 	[Serializable]
 	public sealed class AnimationData : IAnimationData
 	{
+		private	const float DEFAULT_ANIMATION_FRAME_RATE = 60;
+		
 		[field: SerializeField]
 		public AnimationType animationType { get; private set; }
 		
-		[field:SerializeField]
-		public int animationFrameRate { get; private set; } = 2;
+		[SerializeField]
+		private int animationFrameRate = 2;
 
 		[field: SerializeField]
 		public bool isLoopAnimation { get; private set; }
@@ -23,6 +25,24 @@ namespace Core.Blocks
 		private Sprite[] animationSpritesInternal;
 		
 		public IReadOnlyList<Sprite> animationSprites => animationSpritesInternal;
+		
+		private int fixedAnimationFrameRate = -1;
+		
+		public int GetAnimationFrameRate()
+		{
+			TrySetFixedAnimationFrameRate();
+
+			return fixedAnimationFrameRate;
+		}
+
+		private void TrySetFixedAnimationFrameRate()
+		{
+			if (fixedAnimationFrameRate == -1)
+				fixedAnimationFrameRate = Mathf.Max((int)(CalculateFixedAnimationFrameRate() + 0.5f), 1);
+		}
+
+		private float CalculateFixedAnimationFrameRate()
+			=> animationFrameRate * Application.targetFrameRate / DEFAULT_ANIMATION_FRAME_RATE;
 	}
 
 	[Serializable]

@@ -5,8 +5,8 @@ namespace Core.Animation
 {
 	public interface IAnimationData
 	{
-		int animationFrameRate { get; }
 		bool isLoopAnimation { get; }
 		IReadOnlyList<Sprite> animationSprites { get; }
+		int GetAnimationFrameRate();
 	}
 }
