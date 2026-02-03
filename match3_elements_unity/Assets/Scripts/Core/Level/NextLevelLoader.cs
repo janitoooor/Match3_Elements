@@ -15,9 +15,11 @@ namespace Core.Level
 			this.currentLevelChanger = currentLevelChanger;
 		}
 
-		public void LoadNextLevel()
+		public void LoadNextLevel(bool changeCurrentLevel)
 		{
-			currentLevelChanger.ChangeCurrentLevel();
+			if (changeCurrentLevel)
+				currentLevelChanger.ChangeCurrentLevel();
+			
 			gameRegimeLoader.RestartCurrentGameRegime();
 		}
 	}

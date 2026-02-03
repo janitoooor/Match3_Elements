@@ -5,19 +5,19 @@ namespace Core.Level
 {
 	public sealed class LevelFinishController
 	{
-		private readonly INextLevelLoader nextLevelLoader;
+		private readonly ILevelFinishFlow levelFinishFlow;
 
 		[Inject]
 		public LevelFinishController(
-			INextLevelLoader nextLevelLoader, 
+			ILevelFinishFlow levelFinishFlow,
 			IAllBlocksOnGridKilledEvent gridKilledEvent)
 		{
-			this.nextLevelLoader = nextLevelLoader;
+			this.levelFinishFlow = levelFinishFlow;
 			
 			gridKilledEvent.OnAllBlocksOnGridKilled += OnAllBlocksOnGridKilled;
 		}
 
 		private void OnAllBlocksOnGridKilled()
-			=> nextLevelLoader.LoadNextLevel();
+			=> levelFinishFlow.FinishLevel();
 	}
 }

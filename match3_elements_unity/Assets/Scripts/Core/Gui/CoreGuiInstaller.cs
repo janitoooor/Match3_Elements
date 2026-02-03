@@ -1,12 +1,16 @@
+using Core.Gui.LevelWinWidget;
+using Core.Gui.MainWidget;
 using Zenject;
 
-namespace Core.MainWidget
+namespace Core.Gui
 {
-	public sealed class CoreGuiInstaller : MonoInstaller
+	public sealed class CoreGuiInstaller : Installer<CoreGuiInstaller>
 	{
 		public override void InstallBindings()
 		{
 			BindMainWidget();
+
+			BindLevelWinWidget();
 		}
 		
 		private void BindMainWidget()
@@ -16,6 +20,13 @@ namespace Core.MainWidget
 			Container.BindInterfacesTo<CoreWidgetAsyncDataInitializer>().AsSingle();
 
 			Container.Bind<ICoreMainWidgetModel>().To<CoreMainWidgetModel>().AsSingle();
+		}
+		
+		private void BindLevelWinWidget()
+		{
+			Container.BindInterfacesTo<LevelWinWidgetAsyncDataInitializer>().AsSingle();
+
+			Container.Bind<ILevelWinWidgetModel>().To<LevelWinWidgetModel>().AsSingle();
 		}
 	}
 }

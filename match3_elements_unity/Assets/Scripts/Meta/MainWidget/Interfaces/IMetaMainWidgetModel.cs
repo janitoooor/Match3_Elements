@@ -1,7 +1,6 @@
+using Common.MainWidget;
+
 namespace Meta.MainWidget
 {
-	public interface IMetaMainWidgetModel
-	{
-		void HandleStartButtonClick();
-	}
+	public interface IMetaMainWidgetModel : IWidgetModel { }
 }

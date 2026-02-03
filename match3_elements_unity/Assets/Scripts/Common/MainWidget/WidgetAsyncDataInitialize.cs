@@ -2,15 +2,18 @@ using System;
 using System.Collections;
 using Base;
 using Base.Gui;
+using Base.Gui.Enums;
 
 namespace Common.MainWidget
 {
-	public abstract class WidgetAsyncDataInitialize<T, TP, TG> : AsyncDataInitializer, IWidgetProvider, IDisposable 
+	public abstract class WidgetAsyncDataInitialize<T, TP, TG, TC> : AsyncDataInitializer, IWidgetProvider, IDisposable 
 		where T : IPrefabsContainer<TP>
 		where TP : Enum
 		where TG : GuiWidget
+		where TC : IWidgetModel
 	{
 		private readonly T prefabsContainer;
+		private readonly TC widgetModel;
 		private readonly IGuiEngine guiEngine;
 		
 		protected TG widget;
@@ -19,8 +22,10 @@ namespace Common.MainWidget
 
 		protected WidgetAsyncDataInitialize(
 			T prefabsContainer,
+			TC widgetModel,
 			IGuiEngine guiEngine)
 		{
+			this.widgetModel = widgetModel;
 			this.prefabsContainer = prefabsContainer;
 			this.guiEngine = guiEngine;
 		}
@@ -30,12 +35,17 @@ namespace Common.MainWidget
 			var widgetPrefab = prefabsContainer.GetPrefab<TG>(widgetKey);
 			widget = guiEngine.RegisterWidget(widgetPrefab);
 
-			InitializeRegisteredWidget();
+			widget.OnWidgetButtonClicked += HandleButtonClick;
+			
+			AdditionalInitializeRegisteredWidget();
 			
 			yield return null;
 		}
 
-		protected abstract void InitializeRegisteredWidget();
+		private void HandleButtonClick(WidgetButtonType buttonType)
+			=> widgetModel.HandleButtonClick(buttonType);
+
+		protected virtual void AdditionalInitializeRegisteredWidget() {}
 
 		public void ShowWidget()
 			=> widget.Open();

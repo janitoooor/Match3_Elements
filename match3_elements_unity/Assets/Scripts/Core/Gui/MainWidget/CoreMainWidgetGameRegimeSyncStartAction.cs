@@ -2,7 +2,7 @@ using Common.MainWidget;
 using Core.Enums;
 using Zenject;
 
-namespace Core.MainWidget
+namespace Core.Gui.MainWidget
 {
 	public sealed class CoreMainWidgetGameRegimeSyncStartAction : WidgetGameRegimeSyncStartAction<ICoreWidgetProvider>
 	{

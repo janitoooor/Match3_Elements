@@ -1,4 +1,5 @@
 using Base.Gui;
+using Base.Gui.Enums;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,15 +7,16 @@ namespace Meta.MainWidget
 {
 	public sealed class MetaMainWidget : GuiWidget, IMetaMainWidget
 	{
-		public event MetaStartButtonClickedDelegate OnStartButtonClicked;
-		
 		[SerializeField]
 		private Button startButton;
+		
+		[SerializeField]
+		private Button clearSavesButton;
 
 		private void Awake()
-			=> startButton.onClick.AddListener(StartButtonClick);
-
-		private void StartButtonClick()
-			=> OnStartButtonClicked?.Invoke();
+		{
+			AddButtonClickListener(startButton, WidgetButtonType.StartGame);
+			AddButtonClickListener(clearSavesButton, WidgetButtonType.ClearSaves);
+		}
 	}
 }

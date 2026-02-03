@@ -1,4 +1,5 @@
 using Core.CoreCamera;
+using Core.Gui;
 using Core.Input;
 using Core.Interfaces;
 using Core.Saves;
@@ -20,6 +21,13 @@ namespace Core
 		{
 			CoreSavesInstaller.Install(Container);
 			
+			CoreGuiInstaller.Install(Container);
+			
+			BindBaseCoreEntities();
+		}
+
+		private void BindBaseCoreEntities()
+		{
 			Container.BindInterfacesTo<SwipeInputController>().AsSingle();
 			
 #if UNITY_EDITOR

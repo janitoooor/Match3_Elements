@@ -55,10 +55,12 @@ namespace Core.Level
 			
 			Container.Bind<ICurrentLevelChanger>().To<CurrentLevelChanger>().AsSingle();
 			Container.Bind<ILevelConstructor>().To<LevelConstructor>().AsSingle();
-
+			
 			Container.Bind<LevelFinishController>().AsSingle().NonLazy();
 			Container.Bind<INextLevelLoader>().To<NextLevelLoader>().AsSingle();
 			Container.Bind<ILevelRestarter>().To<LevelRestarter>().AsSingle();
+			
+			Container.Bind<ILevelFinishFlow>().To<LevelFinishFlow>().AsSingle();
 		}
 
 		private void BindBlockSwipe()

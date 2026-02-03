@@ -8,11 +8,10 @@ namespace Meta.MainWidget
 	public sealed class MetaWidgetAsyncDataInitializer : WidgetAsyncDataInitialize<
 		IMetaPrefabsContainer, 
 		MetaPrefabsKeys,
-		MetaMainWidget>,
+		MetaMainWidget,
+		IMetaMainWidgetModel>,
 		IMetaWidgetProvider
 	{
-		private readonly IMetaMainWidgetModel metaMainWidgetModel;
-
 		protected override MetaPrefabsKeys widgetKey => MetaPrefabsKeys.MainWidget;
 
 		public override byte priority => (byte)MetaAsyncDataInitializePriority.MainWidget;
@@ -21,14 +20,7 @@ namespace Meta.MainWidget
 		public MetaWidgetAsyncDataInitializer(
 			IMetaPrefabsContainer prefabsContainer, 
 			IGuiEngine guiEngine, 
-			IMetaMainWidgetModel metaMainWidgetModel) 
-			: base(prefabsContainer, guiEngine)
-			=> this.metaMainWidgetModel = metaMainWidgetModel;
-		
-		protected override void InitializeRegisteredWidget()
-			=> widget.OnStartButtonClicked += OnStartButtonClicked;
-
-		private void OnStartButtonClicked()
-			=> metaMainWidgetModel.HandleStartButtonClick();
+			IMetaMainWidgetModel widgetModel) 
+			: base(prefabsContainer, widgetModel, guiEngine) {}
 	}
 }
