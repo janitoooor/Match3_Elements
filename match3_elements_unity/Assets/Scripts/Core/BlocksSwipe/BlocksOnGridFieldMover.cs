@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Core.Blocks;
 using Core.BlocksMovements;
@@ -16,6 +17,8 @@ namespace Core.BlocksSwipe
 		private readonly IBlocksOnGridRepository blocksOnGridRepository;
 		private readonly IBlockMovementProcessor blockMovementProcessor;
 		private readonly IBlockOnGridRendererSortingOderProvider sortingOderProvider;
+		
+		private readonly Dictionary<IBlockEntity, Vector2Int> movedBlocks = new();
 
 		[Inject]
 		public BlocksOnGridFieldMover(
@@ -139,10 +142,32 @@ namespace Core.BlocksSwipe
 				sortingOderProvider.SetBlockRendererSortingOderForCell(movedBlockEntity, targetCell);
 				blocksOnGridRepository.SetCellUnBusy(targetCell);
 				callback?.Invoke(movedBlockEntity);
+
+				TryAddBlockToDictForKillRequest(targetCell, movedBlockEntity);
 				
 				if (!blockMovementProcessor.AnyBlocksIsFall())
-					OnKillBlocksInLineRequest?.Invoke(movedBlockEntity, targetCell);
+					RequestForKillBlocks();
 			};
+
+		private void TryAddBlockToDictForKillRequest(Vector2Int targetCell, IBlockEntity movedBlockEntity)
+		{
+			if (!movedBlocks.TryAdd(movedBlockEntity, targetCell))
+				movedBlocks[movedBlockEntity] = targetCell;
+		}
+
+		private void RequestForKillBlocks()
+		{
+			foreach (var (blockEntity, movedBlockCell) in movedBlocks)
+				RequestForKillBlock(blockEntity, movedBlockCell);
+
+			movedBlocks.Clear();
+		}
+
+		private void RequestForKillBlock(IBlockEntity blockEntity, Vector2Int movedBlockCell)
+		{
+			if (!blocksOnGridRepository.killedBlocks.Contains(blockEntity))
+				OnKillBlocksInLineRequest?.Invoke(blockEntity, movedBlockCell);
+		}
 
 		private MovedBlockDelegate TryFallBlockAfterSingleMove(Vector2Int sourceCell, Vector2Int targetCell) 
 			=> movedBlockEntity =>
