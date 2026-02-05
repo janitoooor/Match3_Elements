@@ -11,6 +11,8 @@ namespace Core.Level
 		private readonly IBlocksOnGridCoreSavesStorage blocksOnGrid;
 		
 		private readonly int maxLevel;
+
+		private bool isMaxLevel;
 		
 		[Inject]
 		public CurrentLevelChanger(
@@ -29,6 +31,9 @@ namespace Core.Level
 			blocksOnGrid.ClearLevelData();
 			
 			var nextLevel = currentLevelSavesStorage.currentLevel + 1;
+
+			isMaxLevel = nextLevel > maxLevel;
+			
 			currentLevelSavesStorage.currentLevel = nextLevel > maxLevel ? 0 : nextLevel;
 		}
 
@@ -36,7 +41,7 @@ namespace Core.Level
 		{
 			blocksOnGrid.ClearLevelData();
 			
-			var newLevel = currentLevelSavesStorage.currentLevel - 1;
+			var newLevel = isMaxLevel ? maxLevel : currentLevelSavesStorage.currentLevel - 1;
 			currentLevelSavesStorage.currentLevel = newLevel > 0 ? newLevel : 0;
 		}
 	}
