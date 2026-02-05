@@ -15,6 +15,7 @@ namespace Core.Grid
 		IReadOnlyDictionary<Vector2Int, IBlockEntity> gridCells { get; }
 		IReadOnlyCollection<IBlockEntity> killedBlocks { get; }
 		Vector2Int gridSize { get; }
+		Dictionary<IBlockEntity, Vector2Int> GetSaveBlocksOnGridField();
 		void SetCellBusy(Vector2Int blockCell);
 		void SetCellUnBusy(Vector2Int blockCell);
 		void SetCellBusyByKill(Vector2Int blockCell);

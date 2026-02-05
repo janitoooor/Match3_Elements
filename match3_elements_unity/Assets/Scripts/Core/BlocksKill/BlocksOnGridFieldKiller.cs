@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using Core.Blocks;
+using Core.BlocksSwipe;
 using Core.Grid;
 using Core.Level;
 using UnityEngine;
 using Zenject;
 
-namespace Core.BlocksSwipe
+namespace Core.BlocksKill
 {
-	public sealed class BlocksOnGridFieldKiller : IAllBlocksOnGridKilledEvent
+	public sealed class BlocksOnGridFieldKiller : IBlocksOnGridFieldKiller, IAllBlocksOnGridKilledEvent
 	{
 		public event AllBlocksOnGridKilledDelegate OnAllBlocksOnGridKilled;
 		
@@ -16,7 +17,6 @@ namespace Core.BlocksSwipe
 		private readonly ICurrentLevelDataProvider currentLevelDataProvider;
 		
 		private readonly Stack<IBlockEntity> tempConnectedBlocsStack = new();
-		
 		
 		[Inject]
 		public BlocksOnGridFieldKiller(
@@ -27,11 +27,9 @@ namespace Core.BlocksSwipe
 			this.blocksOnGridRepository = blocksOnGridRepository;
 			this.blocksOnGridFieldMover = blocksOnGridFieldMover;
 			this.currentLevelDataProvider = currentLevelDataProvider;
-
-			blocksOnGridFieldMover.OnKillBlocksInLineRequest += TryKillBlocksInLine;
 		}
 
-		private void TryKillBlocksInLine(IBlockEntity block, Vector2Int blockCell)
+		public void TryKillBlocksInLine(IBlockEntity block, Vector2Int blockCell)
 		{ 
 			HashSet<IBlockEntity> markedBlocsForKill = new();
 			

@@ -1,4 +1,4 @@
-namespace Core.BlocksSwipe
+namespace Core.BlocksKill
 {
 	public delegate void AllBlocksOnGridKilledDelegate();
 	

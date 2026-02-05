@@ -1,4 +1,5 @@
 using Core.Blocks;
+using Core.BlocksKill;
 using Core.BlocksMovements;
 using Core.BlocksSwipe;
 using Core.Grid;
@@ -46,6 +47,8 @@ namespace Core.Level
 		private void BindLevel()
 		{
 			Container.Bind<NewLevelBlocksOnGridShowGameRegimeSyncStartAction>().AsSingle().NonLazy();
+			Container.Bind<NewLevelBlocksOnGridFallGameRegimeSyncStartAction>().AsSingle().NonLazy();
+			Container.Bind<IBlockOnGridFieldRequestKillEvent>().To<NewLevelBlocksOnGridKillGameRegimeSyncStartAction>().AsSingle();
 			
 			Container.Bind<ICurrentLevelDataProvider>().To<CurrentLevelDataProvider>().AsSingle();
 			
@@ -69,8 +72,16 @@ namespace Core.Level
 
 			Container.Bind<BlocksSwipeInputController>().AsSingle().NonLazy();
 			
-			Container.Bind<IBlocksOnGridFieldMover>().To<BlocksOnGridFieldMover>().AsSingle();
-			Container.Bind<IAllBlocksOnGridKilledEvent>().To<BlocksOnGridFieldKiller>().AsSingle();
+			Container.BindInterfacesTo<BlocksOnGridFieldMover>().AsSingle();
+			
+			BindBlocksKills();
+		}
+
+		private void BindBlocksKills()
+		{
+			Container.BindInterfacesTo<BlocksOnGridFieldKiller>().AsSingle();
+			Container.Bind<BlockOnGridFieldRequestKillController>().AsSingle().NonLazy();
+			Container.Bind<IBlockOnGridFieldRequestKillHandler>().To<BlockOnGridFieldRequestKillHandler>().AsSingle();
 		}
 
 		private void BindBlockMovements()

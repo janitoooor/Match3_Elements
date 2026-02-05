@@ -59,6 +59,9 @@ namespace Core.Grid
 		public bool IsCellBusy(Vector2Int cell)
 			=> busyCells.Contains(cell) || busyCellsByKill.Contains(cell);
 
+		public Dictionary<IBlockEntity, Vector2Int> GetSaveBlocksOnGridField()
+			=> new(blocksOnGridFieldInternal);
+
 		public void SetCellBusy(Vector2Int blockCell)
 			=> busyCells.Add(blockCell);
 

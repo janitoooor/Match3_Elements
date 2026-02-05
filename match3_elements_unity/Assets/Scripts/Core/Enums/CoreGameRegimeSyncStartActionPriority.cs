@@ -6,6 +6,8 @@ namespace Core.Enums
 		CameraGridFieldFit,
 		NewLevelBlocksOnGridShow,
 		BalloonActivate,
+		NewLevelBlocksOnGridFall,
+		NewLevelBlocksOnGridKill,
 		
 		SwipeInputInitialize = byte.MaxValue,
 	}

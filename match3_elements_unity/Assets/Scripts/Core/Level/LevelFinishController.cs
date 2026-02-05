@@ -1,3 +1,4 @@
+using Core.BlocksKill;
 using Core.BlocksSwipe;
 using Zenject;
 

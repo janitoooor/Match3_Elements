@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using System.Linq;
 using Core.Blocks;
+using Core.BlocksKill;
 using Core.BlocksMovements;
 using Core.Enums;
 using Core.Grid;
@@ -10,15 +10,13 @@ using Zenject;
 
 namespace Core.BlocksSwipe
 {
-	public sealed class BlocksOnGridFieldMover : IBlocksOnGridFieldMover
+	public sealed class BlocksOnGridFieldMover : IBlocksOnGridFieldMover, IBlockOnGridFieldRequestKillEvent
 	{
-		public event KillBlocksInLineRequestDelegate OnKillBlocksInLineRequest;
+		public event BlockOnGridFieldRequestKillDelegate OnBlockOnGridFieldRequestKill;
 		
 		private readonly IBlocksOnGridRepository blocksOnGridRepository;
 		private readonly IBlockMovementProcessor blockMovementProcessor;
 		private readonly IBlockOnGridRendererSortingOderProvider sortingOderProvider;
-		
-		private readonly Dictionary<IBlockEntity, Vector2Int> movedBlocks = new();
 
 		[Inject]
 		public BlocksOnGridFieldMover(
@@ -68,7 +66,7 @@ namespace Core.BlocksSwipe
 				
 			while (upNeighbourCellY < blocksOnGridRepository.gridSize.y && isNeighbourFallen)
 			{
-				isNeighbourFallen = TryFallUpNeighbourAfterBlockMovedSide(sourceCell.x, upNeighbourCellY);
+				isNeighbourFallen = TryFallUpNeighbourAfterBlockMoved(sourceCell.x, upNeighbourCellY);
 				upNeighbourCellY++;
 			}
 		}
@@ -143,60 +141,42 @@ namespace Core.BlocksSwipe
 				blocksOnGridRepository.SetCellUnBusy(targetCell);
 				callback?.Invoke(movedBlockEntity);
 
-				TryAddBlockToDictForKillRequest(targetCell, movedBlockEntity);
-				
-				if (!blockMovementProcessor.AnyBlocksIsFall())
-					RequestForKillBlocks();
+				OnBlockOnGridFieldRequestKill?.Invoke(movedBlockEntity, targetCell);
 			};
-
-		private void TryAddBlockToDictForKillRequest(Vector2Int targetCell, IBlockEntity movedBlockEntity)
-		{
-			if (!movedBlocks.TryAdd(movedBlockEntity, targetCell))
-				movedBlocks[movedBlockEntity] = targetCell;
-		}
-
-		private void RequestForKillBlocks()
-		{
-			foreach (var (blockEntity, movedBlockCell) in movedBlocks)
-				RequestForKillBlock(blockEntity, movedBlockCell);
-
-			movedBlocks.Clear();
-		}
-
-		private void RequestForKillBlock(IBlockEntity blockEntity, Vector2Int movedBlockCell)
-		{
-			if (!blocksOnGridRepository.killedBlocks.Contains(blockEntity))
-				OnKillBlocksInLineRequest?.Invoke(blockEntity, movedBlockCell);
-		}
 
 		private MovedBlockDelegate TryFallBlockAfterSingleMove(Vector2Int sourceCell, Vector2Int targetCell) 
 			=> movedBlockEntity =>
 			{
-				var downNeighbourCellY = targetCell.y - 1;
-
-				if (downNeighbourCellY >= 0)
-					TryFallBlockAfterMovedSide(targetCell, downNeighbourCellY, movedBlockEntity);
+				TryFallBlockFrom(movedBlockEntity, targetCell);
 
 				TryFallUpNeighboursAfterBlockMoved(sourceCell);
 			};
-		
-		private void TryFallBlockAfterMovedSide(Vector2Int targetCell, int downNeighbourCellY, IBlockEntity blockEntity)
+
+		public void TryFallBlockFrom(IBlockEntity blockEntity, Vector2Int blockCell)
+		{
+			var downNeighbourCellY = blockCell.y - 1;
+
+			if (downNeighbourCellY >= 0)
+				TryFallBlock(blockCell, downNeighbourCellY, blockEntity);
+		}
+
+		private void TryFallBlock(Vector2Int targetCell, int downNeighbourCellY, IBlockEntity blockEntity)
 		{
 			var cellToFall = new Vector2Int(targetCell.x, downNeighbourCellY);
 
 			var blockInCellToFall = blocksOnGridRepository.gridCells[cellToFall];
 			
 			if (blockInCellToFall == null)
-				FallBlockAfterMovedSide(targetCell, blockEntity, cellToFall);
+				FallBlock(targetCell, blockEntity, cellToFall);
 		}
 
-		private void FallBlockAfterMovedSide(Vector2Int targetCell, IBlockEntity movedBlockEntity, Vector2Int cellToFall)
+		private void FallBlock(Vector2Int targetCell, IBlockEntity movedBlockEntity, Vector2Int cellToFall)
 		{
 			SingleMoveBlockToCell(movedBlockEntity, targetCell, cellToFall, true);
 			TryFallUpNeighboursAfterBlockMoved(targetCell);
 		}
 
-		private bool TryFallUpNeighbourAfterBlockMovedSide(int sourceDownCellX, int upNeighbourCellY)
+		private bool TryFallUpNeighbourAfterBlockMoved(int sourceDownCellX, int upNeighbourCellY)
 		{
 			var upNeighbourCell = new Vector2Int(sourceDownCellX, upNeighbourCellY);
 			var upNeighbourBlock = blocksOnGridRepository.gridCells[upNeighbourCell];
