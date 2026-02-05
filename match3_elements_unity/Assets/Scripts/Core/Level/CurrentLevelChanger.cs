@@ -24,12 +24,20 @@ namespace Core.Level
 			maxLevel = levelsContainer.GetLevelsCount() - 1;
 		}
 
-		public void ChangeCurrentLevel()
+		public void IncreaseCurrentLevel()
 		{
 			blocksOnGrid.ClearLevelData();
 			
 			var nextLevel = currentLevelSavesStorage.currentLevel + 1;
 			currentLevelSavesStorage.currentLevel = nextLevel > maxLevel ? 0 : nextLevel;
+		}
+
+		public void DecreaseCurrentLevel()
+		{
+			blocksOnGrid.ClearLevelData();
+			
+			var newLevel = currentLevelSavesStorage.currentLevel - 1;
+			currentLevelSavesStorage.currentLevel = newLevel > 0 ? newLevel : 0;
 		}
 	}
 }

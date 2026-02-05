@@ -18,7 +18,7 @@ namespace Core.Level
 		public void LoadNextLevel(bool changeCurrentLevel)
 		{
 			if (changeCurrentLevel)
-				currentLevelChanger.ChangeCurrentLevel();
+				currentLevelChanger.IncreaseCurrentLevel();
 			
 			gameRegimeLoader.RestartCurrentGameRegime();
 		}

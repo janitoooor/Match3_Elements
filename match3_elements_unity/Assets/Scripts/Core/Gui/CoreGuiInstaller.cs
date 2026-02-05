@@ -27,6 +27,8 @@ namespace Core.Gui
 			Container.BindInterfacesTo<LevelWinWidgetAsyncDataInitializer>().AsSingle();
 
 			Container.Bind<ILevelWinWidgetModel>().To<LevelWinWidgetModel>().AsSingle();
+			
+			Container.Bind<ILevelWinWidgetLevelRestarter>().To<LevelWinWidgetLevelRestarter>().AsSingle();
 		}
 	}
 }

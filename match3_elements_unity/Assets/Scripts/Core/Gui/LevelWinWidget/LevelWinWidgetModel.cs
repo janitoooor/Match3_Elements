@@ -7,13 +7,13 @@ namespace Core.Gui.LevelWinWidget
 {
 	public sealed class LevelWinWidgetModel : ILevelWinWidgetModel
 	{
-		private readonly ILevelRestarter levelRestarter;
+		private readonly ILevelWinWidgetLevelRestarter levelRestarter;
 		private readonly INextLevelLoader nextLevelLoader;
 		private readonly IGameRegimeLoader gameRegimeLoader;
 
 		[Inject]
 		public LevelWinWidgetModel(
-			ILevelRestarter levelRestarter, 
+			ILevelWinWidgetLevelRestarter levelRestarter, 
 			INextLevelLoader nextLevelLoader,
 			IGameRegimeLoader gameRegimeLoader)
 		{

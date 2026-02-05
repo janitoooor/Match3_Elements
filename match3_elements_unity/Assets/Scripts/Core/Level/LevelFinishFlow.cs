@@ -23,7 +23,7 @@ namespace Core.Level
 		
 		public void FinishLevel()
 		{
-			currentLevelChanger.ChangeCurrentLevel();
+			currentLevelChanger.IncreaseCurrentLevel();
 			coreMainWidgetProvider.HideButtons();
 			levelWinWidgetProvider.ShowWidget();
 		}

@@ -2,6 +2,7 @@ namespace Core.Level
 {
 	public interface ICurrentLevelChanger
 	{
-		void ChangeCurrentLevel();
+		void IncreaseCurrentLevel();
+		void DecreaseCurrentLevel();
 	}
 }
